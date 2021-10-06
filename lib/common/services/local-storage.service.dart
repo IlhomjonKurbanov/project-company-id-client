@@ -12,7 +12,7 @@ class LocalStorageService {
     return prefs.setString(_tokenKey, tokenKey);
   }
 
-  Future<String> getTokenKey() async {
+  Future<String?> getTokenKey() async {
     final SharedPreferences prefs = await _prefs;
     return prefs.getString(_tokenKey);
   }

@@ -1,4 +1,5 @@
 import 'package:company_id_new/store/models/calendar.model.dart';
+import 'package:company_id_new/store/models/current-day.model.dart';
 import 'package:company_id_new/store/models/filter-projects-users-stack.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
@@ -22,61 +23,59 @@ import 'package:company_id_new/store/reducers/rules.reducer.dart';
 import 'package:company_id_new/store/reducers/stack.reducer.dart';
 import 'package:company_id_new/store/reducers/ui.reducer.dart';
 import 'package:company_id_new/store/reducers/users.reducer.dart';
-import 'package:company_id_new/store/models/current-day.model.dart';
 import 'projects.reducer.dart';
 
 class AppState {
   AppState(
-      {this.isLoading,
+      {required this.isLoading,
       this.notify,
-      this.users,
-      this.titles,
+      required this.users,
+      required this.titles,
       this.user,
       this.filter,
       this.holidays,
       this.logs,
-      this.logsByDate,
-      this.projects,
+      required this.logsByDate,
+      required this.projects,
       this.project,
       this.currentUser,
       this.lastProject,
-      this.absentUsers,
-      this.absentProjects,
-      this.currentDate,
+      required this.absentUsers,
+      required this.absentProjects,
+      required this.currentDate,
       this.vacationSickAvailable,
-      this.filterLogsUsersProjects,
-      this.filterProjectsUsersStack,
+      required this.filterLogsUsersProjects,
+      required this.filterProjectsUsersStack,
       this.statistic,
-      this.rules,
-      this.stack,
-      this.usersForCreatingProject,
-      this.timelogProjects,
-      this.requests,
+      required this.rules,
+      required this.stack,
+      required this.usersForCreatingProject,
+      required this.timelogProjects,
+      required this.requests,
       this.projectsFilter});
+
   bool isLoading;
-  String lastProject;
+  String? lastProject;
   List<String> titles;
   List<ProjectModel> projects;
-  List<ProjectModel> filterProjects;
-  ProjectModel project;
-  UserModel user;
-  NotifyModel notify;
+  ProjectModel? project;
+  UserModel? user;
+  NotifyModel? notify;
   List<LogModel> logsByDate;
-  UserModel currentUser;
+  UserModel? currentUser;
   List<ProjectModel> timelogProjects;
-  StatisticModel statistic;
-  LogFilterModel filter;
-  ProjectsFilterModel projectsFilter;
+  StatisticModel? statistic;
+  LogFilterModel? filter;
+  ProjectsFilterModel? projectsFilter;
   List<UserModel> users;
   FilterLogsUsersProjects filterLogsUsersProjects;
   FilterProjectsUsersStack filterProjectsUsersStack;
   CurrentDateModel currentDate;
   List<UserModel> absentUsers;
   List<ProjectModel> absentProjects;
-  List<UserModel> filterUsers;
-  Map<DateTime, List<CalendarModel>> holidays;
-  VacationSickAvailable vacationSickAvailable;
-  Map<DateTime, List<CalendarModel>> logs;
+  Map<DateTime, List<CalendarModel>>? holidays;
+  VacationSickAvailable? vacationSickAvailable;
+  Map<DateTime, List<CalendarModel>>? logs;
   List<RulesModel> rules;
   List<UserModel> usersForCreatingProject;
   List<StackModel> stack;

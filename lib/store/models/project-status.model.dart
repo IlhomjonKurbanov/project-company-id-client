@@ -4,6 +4,7 @@ class ProjectStatusModel {
   ProjectStatusModel(this.title, this.status);
   String title;
   ProjectStatus status;
+
   String getStatusQuery() {
     const String queryStart = 'status=';
     switch (status) {

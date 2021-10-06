@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:flutter/material.dart';
@@ -9,92 +9,59 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.markAsHandled, this.notify, this.isLoading});
-  final bool isLoading;
+  _ViewModel({required this.markAsHandled, this.notify});
   final Function markAsHandled;
-  final NotifyModel notify;
+  final NotifyModel? notify;
 }
 
 class Notifier extends StatelessWidget {
-  const Notifier({@required this.child});
+  const Notifier({required this.child});
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
           notify: store.state.notify,
-          isLoading: store.state.isLoading,
           markAsHandled: () => store.dispatch(NotifyHandled())),
       builder: (BuildContext context, _ViewModel state) => child,
-      onWillChange: (_ViewModel state, _ViewModel a) {
-        if (a.notify != null && !state.isLoading) {
+      onWillChange: (_ViewModel? state, _ViewModel a) {
+        if (a.notify != null) {
           a.markAsHandled();
-          BotToast.showAttachedWidget(
-              attachedBuilder: (_) => Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: AppColors.secondary,
-                        border: Border.all(
-                            width: 1, color: _getColor(a.notify.type))),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 20),
-                          color: _getColor(a.notify.type),
-                          child: _getIcon(a.notify.type),
-                        ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        Expanded(
-                          child: Text(
-                            a.notify.notificationMessage,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-              enableSafeArea: false,
-              duration: const Duration(seconds: 3),
-              target: const Offset(100, 170));
+          BotToast.showCustomNotification(
+              toastBuilder: (_) => Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: _getColor(a.notify!.type)),
+                  child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(18, 18, 13, 18),
+                        child: _getIcon(a.notify!.type)),
+                    Text(a.notify!.notificationMessage),
+                    GestureDetector(
+                        onTap: () {
+                          BotToast.cleanAll();
+                        },
+                        child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 18.0),
+                            child: Icon(Icons.close,
+                                size: 20, color: Colors.white)))
+                  ])),
+              align: const Alignment(-0.97, -0.8),
+              duration: const Duration(seconds: 3));
         }
       },
-      distinct: true,
-    );
-  }
+      distinct: true);
 
   Icon _getIcon(NotificationType type) {
     switch (type) {
       case NotificationType.Error:
-        return const Icon(
-          Icons.warning,
-          color: Colors.white,
-          size: 24,
-        );
+        return const Icon(Icons.warning, color: Colors.white, size: 24);
       case NotificationType.Success:
-        return const Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 24,
-        );
+        return const Icon(Icons.check, color: Colors.white, size: 24);
       case NotificationType.Warning:
-        return const Icon(
-          Icons.warning,
-          color: Colors.white,
-          size: 24,
-        );
+        return const Icon(Icons.warning, color: Colors.white, size: 24);
       default:
-        return const Icon(
-          Icons.warning,
-          color: Colors.white,
-          size: 24,
-        );
+        return const Icon(Icons.warning, color: Colors.white, size: 24);
     }
   }
 

@@ -15,9 +15,8 @@ List<String> _addTitle(List<String> titles, dynamic action) {
   return newTitles;
 }
 
-List<String> _setClearTitle(List<String> titles, dynamic action) {
-  return <String>[action.title as String];
-}
+List<String> _setClearTitle(List<String> titles, dynamic action) =>
+    <String>[action.title as String];
 
 List<String> _removeLast(List<String> titles, PopAction action) {
   if (!action.changeTitle) {

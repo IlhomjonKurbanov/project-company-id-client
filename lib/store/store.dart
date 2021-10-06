@@ -1,4 +1,5 @@
 import 'package:company_id_new/store/epics/auth.epics.dart';
+import 'package:company_id_new/store/epics/error.epics.dart';
 import 'package:company_id_new/store/epics/filter.epics.dart';
 import 'package:company_id_new/store/epics/logs.epics.dart';
 import 'package:company_id_new/store/epics/projects.epics.dart';
@@ -12,6 +13,7 @@ import 'package:company_id_new/store/models/filter-projects-users-stack.model.da
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -22,6 +24,8 @@ import 'package:redux_logging/redux_logging.dart';
 final AppState initalState = AppState(
     isLoading: false,
     titles: <String>[],
+    rules: <RulesModel>[],
+    stack: <StackModel>[],
     projects: <ProjectModel>[],
     logsByDate: <LogModel>[],
     requests: <LogModel>[],
@@ -30,7 +34,7 @@ final AppState initalState = AppState(
     absentProjects: <ProjectModel>[],
     timelogProjects: <ProjectModel>[],
     currentDate: CurrentDateModel(
-        currentDay: DateTime(DateTime.now().year, DateTime.now().month,
+        focusedDay: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 0, 0),
         currentMohth: DateTime(
             DateTime.now().year, DateTime.now().month, 1, DateTime.now().hour)),
@@ -41,23 +45,23 @@ final AppState initalState = AppState(
     users: <UserModel>[]);
 final Store<AppState> store =
     Store<AppState>(appStateReducer, initialState: initalState,
-
         // ignore: always_specify_types
         middleware: [
       LoggingMiddleware<dynamic>.printer(),
-      EpicMiddleware<dynamic>(checkTokenEpic), //h
-      EpicMiddleware<dynamic>(signInEpic), //h
-      EpicMiddleware<dynamic>(logoutEpic), //h
-      EpicMiddleware<dynamic>(routeEpic), //h
-      EpicMiddleware<dynamic>(routePopEpic), //h
-      EpicMiddleware<dynamic>(routePushReplacmentEpic), //h
-      EpicMiddleware<dynamic>(routePopUntilEpic),
-      EpicMiddleware<dynamic>(getLogByDateEpic), //h
-      EpicMiddleware<dynamic>(setPasswordEpic),
-      EpicMiddleware<dynamic>(getLogsEpic), //h
-      EpicMiddleware<dynamic>(usersEpic), //h
-      EpicMiddleware<dynamic>(getProjectsEpic), //h
-      EpicMiddleware<dynamic>(getDetailProjectEpic), //h
+      EpicMiddleware<AppState>(checkTokenEpic), //h
+      EpicMiddleware<AppState>(errorEpic), //h
+      EpicMiddleware<AppState>(signInEpic), //h
+      EpicMiddleware<AppState>(logoutEpic), //h
+      EpicMiddleware<AppState>(routeEpic), //h
+      EpicMiddleware<AppState>(routePopEpic), //h
+      EpicMiddleware<AppState>(routePushReplacmentEpic), //h
+      EpicMiddleware<AppState>(routePopUntilEpic),
+      EpicMiddleware<AppState>(getLogByDateEpic), //h
+      EpicMiddleware<AppState>(setPasswordEpic),
+      EpicMiddleware<AppState>(getLogsEpic), //h
+      EpicMiddleware<AppState>(usersEpic), //h
+      EpicMiddleware<AppState>(getProjectsEpic), //h
+      EpicMiddleware<AppState>(getDetailProjectEpic), //h
       EpicMiddleware<AppState>(userEpic), //h
       EpicMiddleware<AppState>(getLastProjectEpic), //h
       EpicMiddleware<AppState>(setLastProjectEpic),

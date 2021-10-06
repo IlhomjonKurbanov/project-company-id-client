@@ -1,41 +1,34 @@
+import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 
-class AppConverting {
+mixin AppConverting {
   static VacationType getVacationType(int type) {
     switch (type) {
       case 0:
         return VacationType.VacNonPaid;
-        break;
       case 1:
         return VacationType.VacPaid;
-        break;
       case 2:
         return VacationType.SickNonPaid;
-        break;
       case 3:
         return VacationType.SickPaid;
-        break;
       default:
-        return null;
+        return VacationType.VacPaid;
     }
   }
 
   static String getVacationTypeQuery(VacationType type) {
     switch (type) {
       case VacationType.VacPaid:
-        return 'VacationPaid';
-        break;
+        return AppConstants.VacationPaid;
       case VacationType.VacNonPaid:
-        return 'VacationNonPaid';
-        break;
+        return AppConstants.VacationNonPaid;
       case VacationType.SickPaid:
-        return 'SickPaid';
-        break;
+        return AppConstants.SickPaid;
       case VacationType.SickNonPaid:
-        return 'SickNonPaid';
-        break;
+        return AppConstants.SickNonPaid;
       default:
-        return null;
+        return '';
     }
   }
 
@@ -43,66 +36,56 @@ class AppConverting {
     switch (type) {
       case VacationType.VacPaid:
         return 'Vacation - paid';
-        break;
       case VacationType.VacNonPaid:
         return 'Vacation - non-paid';
-        break;
       case VacationType.SickPaid:
         return 'Sick - paid';
-        break;
       case VacationType.SickNonPaid:
         return 'Sick - non-paid';
-        break;
       default:
-        return null;
+        return '';
     }
   }
 
-  static String getTypeLogQuery(LogType logType) {
+  static String getTypeLogQuery(LogType? logType) {
     switch (logType) {
       case LogType.Vacation:
-        return 'vacations';
-        break;
+        return AppConstants.vacations;
       case LogType.Timelog:
-        return 'timelogs';
-        break;
+        return AppConstants.timelogs;
       default:
-        return 'all';
+        return AppConstants.all;
     }
   }
 
-  static Positions getPositionFromEnum(String position) {
+  static Positions getPositionFromEnum(String? position) {
     switch (position) {
-      case 'owner':
+      case AppConstants.owner:
         return Positions.Owner;
-        break;
-      case 'developer':
+      case AppConstants.developer:
         return Positions.Developer;
-        break;
       default:
-        return null;
+        return Positions.Developer;
     }
   }
 
-  static String getPositionFromString(Positions position) {
+  static String getPositionFromString(Positions? position) {
     switch (position) {
       case Positions.Owner:
-        return 'Owner';
-        break;
+        return AppConstants.Owner;
       case Positions.Developer:
-        return 'Developer';
-        break;
+        return AppConstants.Developer;
       default:
-        return null;
+        return AppConstants.Developer;
     }
   }
 
   static String getStringFromProjectStatus(ProjectStatus status) {
     switch (status) {
       case ProjectStatus.Finished:
-        return 'finished';
+        return AppConstants.finished;
       case ProjectStatus.Rejected:
-        return 'rejected';
+        return AppConstants.rejected;
       default:
         return '';
     }
@@ -111,41 +94,41 @@ class AppConverting {
   static String getStringFromRequestStatus(RequestStatus status) {
     switch (status) {
       case RequestStatus.Approved:
-        return 'approved';
+        return AppConstants.approved;
       case RequestStatus.Rejected:
-        return 'rejected';
+        return AppConstants.rejected;
       case RequestStatus.Pending:
-        return 'pending';
+        return AppConstants.pending;
       default:
         return '';
     }
   }
 
-  static RequestStatus requestStatusFromString(String status) {
+  static RequestStatus requestStatusFromString(String? status) {
     switch (status) {
-      case 'approved':
+      case AppConstants.approved:
         return RequestStatus.Approved;
-      case 'rejected':
+      case AppConstants.rejected:
         return RequestStatus.Rejected;
-      case 'pending':
+      case AppConstants.pending:
         return RequestStatus.Pending;
       default:
-        return null;
+        return RequestStatus.Pending;
     }
   }
 
-  static ProjectStatus projectStatusFromString(String status) {
+  static ProjectStatus projectStatusFromString(String? status) {
     switch (status) {
-      case 'finished':
+      case AppConstants.finished:
         return ProjectStatus.Finished;
-      case 'rejected':
+      case AppConstants.rejected:
         return ProjectStatus.Rejected;
-      case 'ongoing':
+      case AppConstants.ongoing:
         return ProjectStatus.Ongoing;
-      case 'all':
+      case AppConstants.all:
         return ProjectStatus.All;
       default:
-        return null;
+        return ProjectStatus.All;
     }
   }
 }

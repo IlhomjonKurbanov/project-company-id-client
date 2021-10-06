@@ -4,12 +4,15 @@ import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:dio/dio.dart';
 
-Future<LogModel> changeStatusVacation(String id, RequestStatus status) async {
-  final String statusValue = AppConverting.getStringFromRequestStatus(status);
-  final Response<dynamic> res =
-      await api.dio.put<dynamic>('/vacations/$id', data: <String, dynamic>{
-    'status': statusValue,
-  });
-  final Map<String, dynamic> vacation = res.data as Map<String, dynamic>;
-  return LogModel.fromJson(vacation);
+mixin VacationsService {
+  static Future<LogModel> changeStatusVacation(
+      String id, RequestStatus status) async {
+    final String statusValue = AppConverting.getStringFromRequestStatus(status);
+    final Response<dynamic> res =
+        await api.dio.put<dynamic>('/vacations/$id', data: <String, dynamic>{
+      'status': statusValue,
+    });
+    final Map<String, dynamic> vacation = res.data as Map<String, dynamic>;
+    return LogModel.fromJson(vacation);
+  }
 }

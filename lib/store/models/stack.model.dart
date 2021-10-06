@@ -1,15 +1,10 @@
 class StackModel {
-  StackModel({this.id, this.name});
+  StackModel({required this.id, required this.name});
   String id;
   String name;
 
-  static StackModel fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      return null;
-    }
-    return StackModel(
-      id: json['_id'] as String,
-      name: json['name'] as String,
-    );
-  }
+  static StackModel fromJson(Map<String, dynamic> json) => StackModel(
+        id: json['_id'] as String,
+        name: json['name'] as String,
+      );
 }

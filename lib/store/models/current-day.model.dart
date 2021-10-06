@@ -1,10 +1,10 @@
 class CurrentDateModel {
-  CurrentDateModel({this.currentDay, this.currentMohth});
-  DateTime currentDay;
+  CurrentDateModel({required this.currentMohth, required this.focusedDay});
   DateTime currentMohth;
-  CurrentDateModel copyWith({DateTime currentDay, DateTime currentMohth}) {
-    return CurrentDateModel(
-        currentDay: currentDay ?? this.currentDay,
-        currentMohth: currentMohth ?? this.currentMohth);
-  }
+  DateTime focusedDay;
+
+  CurrentDateModel copyWith({DateTime? currentMohth, DateTime? focusedDay}) =>
+      CurrentDateModel(
+          focusedDay: focusedDay ?? this.focusedDay,
+          currentMohth: currentMohth ?? this.currentMohth);
 }

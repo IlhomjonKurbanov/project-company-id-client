@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
@@ -14,16 +15,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.user, this.titles, this.requests});
+  _ViewModel({this.user, required this.titles, required this.requests});
   List<String> titles;
-  UserModel user;
+  UserModel? user;
   List<LogModel> requests;
 }
 
 class AppBarWidget extends StatefulWidget with PreferredSizeWidget {
-  AppBarWidget({this.avatar});
-  final String avatar;
-
   @override
   _AppBarWidgetState createState() => _AppBarWidgetState();
   @override
@@ -32,100 +30,69 @@ class AppBarWidget extends StatefulWidget with PreferredSizeWidget {
 
 class _AppBarWidgetState extends State<AppBarWidget> {
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel(
-              user: store.state.user,
-              titles: store.state.titles,
-              requests: store.state.requests,
-            ),
-        builder: (BuildContext context, _ViewModel state) {
-          return AppBar(
-            elevation: 0,
-            centerTitle: true,
-            leading: GestureDetector(
-                onTap: () {
-                  final String fullName =
-                      '${state.user.name} ${state.user.lastName}';
-                  if (fullName == state.titles.last) {
-                    return;
-                  }
-
-                  store.dispatch(
-                      PushAction(UserScreen(uid: state.user.id), fullName));
-                },
-                child: Padding(
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
+      converter: (Store<AppState> store) => _ViewModel(
+          user: store.state.user,
+          titles: store.state.titles,
+          requests: store.state.requests),
+      builder: (BuildContext context, _ViewModel state) => AppBar(
+          leading: GestureDetector(
+              onTap: () {
+                final String fullName =
+                    '${state.user?.name} ${state.user?.lastName}';
+                if (fullName == state.titles.last) {
+                  return;
+                }
+                store.dispatch(
+                    PushAction(UserScreen(uid: state.user!.id), fullName));
+              },
+              child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: AvatarWidget(avatar: widget.avatar, sizes: 20),
-                )),
-            title: Text(state.titles.last),
-            actions: <Widget>[
-              state.requests.isEmpty ||
-                      store.state.user.position != Positions.Owner
-                  ? Container()
-                  : Stack(
-                      children: <Widget>[
-                        IconButton(
-                            icon: const Icon(Icons.notifications),
-                            onPressed: () {
-                              store.dispatch(
-                                  PushAction(RequestsScreen(), 'Requests'));
-                            }),
-                        requestsBadge(state.requests.length.toString()),
-                      ],
-                    ),
-              logout(context)
-            ],
-            automaticallyImplyLeading: false,
-          );
-        });
-  }
+                  child: AvatarWidget(avatar: state.user?.avatar, sizes: 20))),
+          title: Text(state.titles.last),
+          actions: <Widget>[
+            state.requests.isEmpty ||
+                    store.state.user!.position != Positions.Owner
+                ? const SizedBox()
+                : Stack(children: <Widget>[
+                    IconButton(
+                        icon: const Icon(Icons.notifications),
+                        onPressed: () {
+                          store.dispatch(
+                              PushAction(RequestsScreen(), 'Requests'));
+                        }),
+                    _buildRequestsBadge(state.requests.length.toString())
+                  ]),
+            _buildLogout(context)
+          ],
+          automaticallyImplyLeading: false));
 
-  Widget requestsBadge(String text) {
-    return Positioned(
-        right: 8,
-        top: 8,
-        child: Container(
+  Widget _buildRequestsBadge(String text) => Positioned(
+      right: 8,
+      top: 8,
+      child: Container(
           padding: const EdgeInsets.all(1),
           decoration: const BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
-          ),
-          constraints: const BoxConstraints(
-            minWidth: 13,
-            minHeight: 13,
-          ),
+              color: AppColors.main2, shape: BoxShape.circle),
+          constraints: const BoxConstraints(minWidth: 13, minHeight: 13),
           child: Center(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 9,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ));
-  }
+              child: Text(text,
+                  style: const TextStyle(fontSize: 9),
+                  textAlign: TextAlign.center))));
 
-  Widget logout(BuildContext context) {
-    return Stack(
-      children: <Widget>[
+  Widget _buildLogout(BuildContext context) => Stack(children: <Widget>[
         IconButton(
-            icon: const Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app, color: AppColors.main2),
             onPressed: () async {
-              final bool isConfirm = await showDialog(
+              final bool? isConfirm = await showDialog<bool>(
                   barrierDismissible: false,
                   context: context,
-                  builder: (BuildContext context) {
-                    return const ConfirmDialogWidget(
-                        title: 'Logout', text: 'Are you sure to logout');
-                  });
-              if (!isConfirm) {
+                  builder: (BuildContext context) => const ConfirmDialogWidget(
+                      title: 'Logout', text: 'Are you sure to logout'));
+              if (isConfirm != null && !isConfirm) {
                 return;
               }
               store.dispatch(LogoutPending());
-            }),
-      ],
-    );
-  }
+            })
+      ]);
 }

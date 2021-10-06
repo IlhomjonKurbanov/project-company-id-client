@@ -11,9 +11,8 @@ final Reducer<List<LogModel>> requestsReducer = combineReducers<
   TypedReducer<List<LogModel>, RequestVacationSuccess>(_addRequest),
 ]);
 List<LogModel> _getRequests(
-    List<LogModel> requests, GetRequestsSuccess action) {
-  return action.requests;
-}
+        List<LogModel> requests, GetRequestsSuccess action) =>
+    action.requests;
 
 List<LogModel> _changeVacationStatus(
     List<LogModel> requests, ChangeStatusVacationSuccess action) {
@@ -25,6 +24,5 @@ List<LogModel> _changeVacationStatus(
 }
 
 List<LogModel> _addRequest(
-    List<LogModel> requests, RequestVacationSuccess action) {
-  return <LogModel>[action.vacation, ...requests];
-}
+        List<LogModel> requests, RequestVacationSuccess action) =>
+    <LogModel>[action.vacation, ...requests];

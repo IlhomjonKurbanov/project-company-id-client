@@ -5,7 +5,7 @@ import 'package:company_id_new/store/models/user.model.dart';
 class GetProjectsPending {
   GetProjectsPending({this.projectTypes = ProjectsType.Default, this.userId});
   ProjectsType projectTypes;
-  String userId;
+  String? userId;
 }
 
 class GetProjectsSuccess {
@@ -54,6 +54,8 @@ class GetProjectPrefSuccess {
   GetProjectPrefSuccess(this.lastProjectId);
   String lastProjectId;
 }
+
+class GetProjectPrefError {}
 
 class SetProjectPrefPending {
   SetProjectPrefPending(this.lastProjectId);

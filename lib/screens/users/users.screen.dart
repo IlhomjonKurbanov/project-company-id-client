@@ -1,13 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/common/helpers/app-converting.dart';
-import 'package:company_id_new/common/services/refresh.service.dart';
-import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
-import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
-import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
-import 'package:company_id_new/screens/user/user.screen.dart';
-import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/common/widgets/user-tile/user-tile.widget.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
-import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -18,9 +11,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.users, this.user, this.isLoading});
+  _ViewModel({required this.users, required this.user});
   List<UserModel> users;
-  bool isLoading;
   UserModel user;
 }
 
@@ -30,69 +22,38 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-  SlidableController _slidableController;
+  final SlidableController _slidableController = SlidableController();
+
   @override
   void initState() {
-    _slidableController = SlidableController();
-    if (store.state.users != null && store.state.users.isNotEmpty) {
+    super.initState();
+    if (store.state.users.isNotEmpty) {
       return;
     }
     store.dispatch(GetUsersPending(true));
-    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel(
-            users: store.state.users,
-            user: store.state.user,
-            isLoading: store.state.isLoading),
-        builder: (BuildContext context, _ViewModel state) {
-          return SmartRefresher(
-            header: const CustomWaterHeader(),
-            controller: refresh.refreshController,
-            onRefresh: () => store.dispatch(GetUsersPending(true)),
-            enablePullDown: true,
-            child: ListView(
-                children: state.users
-                    .where((UserModel user) => user.id != state.user.id)
-                    .map((UserModel user) {
-              return Slidable(
-                  controller: _slidableController,
-                  enabled: state.user.position == Positions.Owner &&
-                      user.endDate == null,
-                  actionExtentRatio: 0.1,
-                  secondaryActions: <Widget>[
-                    IconSlideAction(
-                        color: AppColors.bg,
-                        icon: Icons.archive,
-                        onTap: () {
-                          store.dispatch(ArchiveUserPending(user.id));
-                        })
-                  ],
-                  actionPane: const SlidableDrawerActionPane(),
-                  child: AppListTile(
-                    leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-                    onTap: () => store.dispatch(PushAction(
-                        UserScreen(uid: user.id),
-                        '${user.name} ${user.lastName}')),
-                    textSpan: TextSpan(
-                        text: '${user.name} ${user.lastName}',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: user.endDate == null
-                                ? Colors.white
-                                : AppColors.semiGrey)),
-                    trailing: Text(
-                        AppConverting.getPositionFromString(user.position),
-                        style: TextStyle(
-                            color: user.endDate == null
-                                ? Colors.white
-                                : AppColors.semiGrey)),
-                  ));
-            }).toList()),
-          );
-        });
-  }
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
+      converter: (Store<AppState> store) =>
+          _ViewModel(users: store.state.users, user: store.state.user!),
+      builder: (BuildContext context, _ViewModel state) => SmartRefresher(
+          controller: RefreshController(initialRefresh: false),
+          onRefresh: () => store.dispatch(GetUsersPending(true)),
+          enablePullDown: true,
+          child: ListView(
+              children: state.users
+                  .where((UserModel user) => user.id != state.user.id)
+                  .map((UserModel user) => UserTileWidget(
+                          user: user,
+                          authPosition: state.user.position!,
+                          slidableController: _slidableController,
+                          secondaryActions: <Widget>[
+                            IconSlideAction(
+                                color: AppColors.bg,
+                                icon: Icons.archive,
+                                onTap: () =>
+                                    store.dispatch(ArchiveUserPending(user.id)))
+                          ]))
+                  .toList())));
 }

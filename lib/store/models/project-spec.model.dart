@@ -4,6 +4,7 @@ class ProjectSpecModel {
   ProjectSpecModel(this.title, this.spec);
   String title;
   ProjectSpec spec;
+
   String getSpecQuery() {
     const String queryStart = 'isInternal=';
     switch (spec) {

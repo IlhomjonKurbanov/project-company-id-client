@@ -23,28 +23,41 @@ List<UserModel> _setUsers(List<UserModel> title, dynamic action) {
   return action.users as List<UserModel>;
 }
 
-final Reducer<UserModel> userReducers =
-    combineReducers<UserModel>(<UserModel Function(UserModel, dynamic)>[
-  TypedReducer<UserModel, GetUserSuccess>(_setUser),
-  TypedReducer<UserModel, RemoveProjectFromUserSuccess>(_removeProjectFromUser),
-  TypedReducer<UserModel, AddProjectToUserSuccess>(_addProjectToUser),
+final Reducer<UserModel?> userReducers =
+    combineReducers<UserModel?>(<UserModel? Function(UserModel?, dynamic)>[
+  TypedReducer<UserModel?, GetUserSuccess>(_setUser),
+  TypedReducer<UserModel?, RemoveProjectFromUserSuccess>(
+      _removeProjectFromUser),
+  TypedReducer<UserModel?, AddProjectToUserSuccess>(_addProjectToUser),
 ]);
 
-UserModel _setUser(UserModel user, GetUserSuccess action) {
+UserModel? _setUser(UserModel? user, GetUserSuccess action) {
   return action.user;
 }
 
-UserModel _removeProjectFromUser(
-    UserModel user, RemoveProjectFromUserSuccess action) {
-  user.activeProjects
+UserModel? _removeProjectFromUser(
+    UserModel? user, RemoveProjectFromUserSuccess action) {
+  List<ProjectModel> activeProjects = <ProjectModel>[];
+  if (user!.activeProjects != null) {
+    activeProjects = <ProjectModel>[...user.activeProjects!];
+  }
+  activeProjects
       .removeWhere((ProjectModel project) => project.id == action.project.id);
-  return user;
+  return user.copyWith(activeProjects: activeProjects);
 }
 
-UserModel _addProjectToUser(UserModel user, AddProjectToUserSuccess action) {
-  user.activeProjects.add(action.project);
-  user.projects.add(action.project);
-  return user;
+UserModel? _addProjectToUser(UserModel? user, AddProjectToUserSuccess action) {
+  List<ProjectModel> activeProjects = <ProjectModel>[];
+  List<ProjectModel> projects = <ProjectModel>[];
+  if (user!.activeProjects != null) {
+    activeProjects = <ProjectModel>[...user.activeProjects!];
+  }
+  if (user.projects != null) {
+    projects = <ProjectModel>[...user.projects!];
+  }
+  activeProjects = <ProjectModel>[...projects, action.project];
+  projects = <ProjectModel>[...projects, action.project];
+  return user.copyWith(activeProjects: activeProjects, projects: projects);
 }
 
 final Reducer<List<UserModel>> absentUsersReducers = combineReducers<

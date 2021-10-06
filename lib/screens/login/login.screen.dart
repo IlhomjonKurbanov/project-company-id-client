@@ -1,6 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
-import 'package:company_id_new/common/services/validators.service.dart';
+import 'package:company_id_new/common/helpers/app-validators.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.isLoading});
+  _ViewModel({required this.isLoading});
   bool isLoading;
 }
 
@@ -29,73 +29,51 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isRemember = false;
   @override
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel(
-              isLoading: store.state.isLoading,
-            ),
-        builder: (BuildContext context, _ViewModel state) {
-          return Notifier(
-            child: Scaffold(
-                body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, top: 100),
-                child: ListView(
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
+      converter: (Store<AppState> store) => _ViewModel(
+            isLoading: store.state.isLoading,
+          ),
+      builder: (BuildContext context, _ViewModel state) => Scaffold(
+          body: Padding(
+              padding: const EdgeInsets.only(left: 52, right: 52),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Image.asset(AppImages.boroda),
-                    const SizedBox(
-                      height: 64,
-                    ),
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                          color: AppColors.red,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    AppInput(
-                      validator: (String value) => validators.validateIsEmpty(
-                          value, 'Please enter email'),
-                      myController: _emailController,
-                      labelText: 'Email',
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    AppInput(
-                      obscureText: true,
-                      validator: (String value) => validators.validateIsEmpty(
-                        value,
-                        'Please enter password',
-                      ),
-                      myController: _passwordController,
-                      labelText: 'Password',
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: AppButtonWidget(
-                        width: 140,
-                        title: 'Login',
-                        isLoading: state.isLoading,
-                        onClick: () => _onLogin(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )),
-          );
-        });
-  }
-
-  void _onLogin() {
-    store.dispatch(
-        SignInPending(_emailController.text.trim(), _passwordController.text));
-  }
+                    Image.asset(AppImages.jsdaddy),
+                    Column(children: <Widget>[
+                      const Text('Login',
+                          style: TextStyle(
+                              color: AppColors.main,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 24),
+                      AppInput(
+                          validator: (String? value) =>
+                              AppValidators.validateIsEmpty(
+                                  value, 'Please enter email'),
+                          myController: _emailController,
+                          labelText: 'Email'),
+                      const SizedBox(height: 16),
+                      AppInput(
+                          obscureText: true,
+                          validator: (String? value) =>
+                              AppValidators.validateIsEmpty(
+                                  value, 'Please enter password'),
+                          myController: _passwordController,
+                          labelText: 'Password'),
+                      const SizedBox(height: 24),
+                      Align(
+                          alignment: Alignment.center,
+                          child: AppButtonWidget(
+                            width: 140,
+                            title: 'Login',
+                            isLoading: state.isLoading,
+                            onClick: () => store.dispatch(SignInPending(
+                                'xakeppok10@gmail.com', 'Huywsraku1')),
+                            // onClick: () => store.dispatch(SignInPending(
+                            //     _emailController.text.trim(),
+                            //     _passwordController.text)),
+                          ))
+                    ])
+                  ]))));
 }

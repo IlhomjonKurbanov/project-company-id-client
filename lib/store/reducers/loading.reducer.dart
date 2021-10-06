@@ -1,17 +1,18 @@
 import 'package:company_id_new/store/actions/auth.action.dart';
+import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
+import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:redux/redux.dart';
-import 'package:company_id_new/store/actions/filter.action.dart';
-import 'package:company_id_new/store/actions/projects.action.dart';
-import 'package:company_id_new/store/actions/users.action.dart';
 
 final Reducer<bool> loadingReducers =
     combineReducers<bool>(<bool Function(bool, dynamic)>[
   TypedReducer<bool, GetUsersPending>(_setTrue),
   TypedReducer<bool, GetUsersSuccess>(_setFalse),
+  TypedReducer<bool, GetUsersError>(_setFalse),
   TypedReducer<bool, GetUsersForCreatingProjectSuccess>(_setFalse),
   TypedReducer<bool, GetUsersError>(_setFalse),
   TypedReducer<bool, GetAbsentUsersSuccess>(_setFalse),
@@ -96,15 +97,12 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, RemoveProjectFromUserError>(_setFalse),
   TypedReducer<bool, GetProjectPrefPending>(_setTrue),
   TypedReducer<bool, GetProjectPrefSuccess>(_setFalse),
+  TypedReducer<bool, GetProjectPrefError>(_setFalse),
   TypedReducer<bool, SetProjectPrefPending>(_setTrue),
   TypedReducer<bool, SetProjectPrefSuccess>(_setFalse),
   TypedReducer<bool, GetStatisticSuccess>(_setFalse),
   TypedReducer<bool, SetVacationSickAvail>(_setFalse),
 ]);
-bool _setTrue(bool isLoading, dynamic action) {
-  return true;
-}
+bool _setTrue(bool isLoading, dynamic action) => true;
 
-bool _setFalse(bool isLoading, dynamic action) {
-  return false;
-}
+bool _setFalse(bool isLoading, dynamic action) => false;

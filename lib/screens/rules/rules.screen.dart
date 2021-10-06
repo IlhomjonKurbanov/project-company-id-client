@@ -8,21 +8,20 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.rules});
+  _ViewModel({required this.rules});
   List<RulesModel> rules;
 }
 
 class RulesScreen extends StatefulWidget {
-  const RulesScreen({Key key}) : super(key: key);
   @override
   _RulesScreenState createState() => _RulesScreenState();
 }
 
 class _RulesScreenState extends State<RulesScreen>
     with TickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController? _controller;
   final Duration _kExpand = const Duration(milliseconds: 200);
-  Animation<double> _iconTurns;
+  Animation<double>? _iconTurns;
   final List<bool> _isExpanded = List<bool>.filled(10, false);
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
@@ -31,75 +30,49 @@ class _RulesScreenState extends State<RulesScreen>
   @override
   void initState() {
     _controller = AnimationController(duration: _kExpand, vsync: this);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    if (store.state.rules != null && store.state.rules.isNotEmpty) {
+    _iconTurns = _controller?.drive(_halfTween.chain(_easeInTween));
+    if (store.state.rules.isNotEmpty) {
       return;
     }
     store.dispatch(GetRulesPending());
-
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) =>
-            _ViewModel(rules: store.state.rules),
-        builder: (BuildContext context, _ViewModel state) {
-          return ListView(
-            children: <Widget>[
-              const Padding(
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
+      converter: (Store<AppState> store) =>
+          _ViewModel(rules: store.state.rules),
+      builder: (BuildContext context, _ViewModel state) =>
+          ListView(children: <Widget>[
+            const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Internal rules',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              if (state.rules != null && state.rules.isNotEmpty)
-                ...state.rules.map(
-                  (RulesModel rule) => ExpansionTile(
+                child: Text('Internal rules', style: TextStyle(fontSize: 24))),
+            ...state.rules.map((RulesModel rule) => ExpansionTile(
                     onExpansionChanged: (bool exp) => setState(() {
-                      _isExpanded[state.rules.indexWhere(
-                          (RulesModel stateRule) =>
-                              stateRule.title == rule.title)] = exp;
-                    }),
+                          _isExpanded[state.rules.indexWhere(
+                              (RulesModel stateRule) =>
+                                  stateRule.title == rule.title)] = exp;
+                        }),
                     trailing: RotationTransition(
-                        turns: _iconTurns,
+                        turns: _iconTurns!,
                         child: !_isExpanded[state.rules.indexWhere(
                                 (RulesModel stateRule) =>
                                     stateRule.title == rule.title)]
-                            ? const Icon(
-                                Icons.expand_more,
-                                color: AppColors.red,
-                              )
-                            : const Icon(
-                                Icons.expand_less,
-                                color: AppColors.red,
-                              )),
+                            ? const Icon(Icons.expand_more,
+                                color: AppColors.main)
+                            : const Icon(Icons.expand_less,
+                                color: AppColors.main)),
                     key: PageStorageKey<int>(state.rules.indexWhere(
                         (RulesModel stateRule) =>
                             stateRule.title == rule.title)),
-                    title: Text(
-                      rule.title,
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                    title: Text(rule.title,
+                        style: const TextStyle(color: Colors.white)),
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              rule.desc,
-                              textAlign: TextAlign.justify,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ],
-          );
-        });
-  }
+                          padding: const EdgeInsets.all(16),
+                          child: Column(children: <Widget>[
+                            Text(rule.desc, textAlign: TextAlign.justify)
+                          ]))
+                    ]))
+          ]));
 }

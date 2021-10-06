@@ -7,7 +7,7 @@ class GetUsersPending {
       {this.usersType = UsersType.Default, this.projectId});
   UsersType usersType;
   bool isFired;
-  String projectId;
+  String? projectId;
 }
 
 class GetUsersSuccess {

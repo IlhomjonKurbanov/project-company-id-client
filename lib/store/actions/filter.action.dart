@@ -27,7 +27,7 @@ class GetLogsFilterProjectsPending {
 class GetLogsFilterUsersSuccess {
   GetLogsFilterUsersSuccess(this.users, {this.usersType});
   List<UserModel> users;
-  UsersType usersType;
+  UsersType? usersType;
 }
 
 class GetLogsFilterProjectsSucess {

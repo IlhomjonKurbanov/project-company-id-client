@@ -6,6 +6,5 @@ final Reducer<List<RulesModel>> rulesReducers = combineReducers<
     List<RulesModel>>(<List<RulesModel> Function(List<RulesModel>, dynamic)>[
   TypedReducer<List<RulesModel>, GetRulesSuccess>(_getRules),
 ]);
-List<RulesModel> _getRules(List<RulesModel> rules, GetRulesSuccess action) {
-  return action.rules;
-}
+List<RulesModel> _getRules(List<RulesModel> rules, GetRulesSuccess action) =>
+    action.rules;

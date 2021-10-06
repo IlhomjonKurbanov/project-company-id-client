@@ -1,12 +1,8 @@
-class AppImages {
-  static const String github = 'github-icon.png';
-  static const String skype = 'skype-icon.png';
-  static const String slack = 'slack.png';
+mixin AppImages {
+  static const String github = 'assets/github-icon.png';
+  static const String skype = 'assets/skype-icon.png';
+  static const String slack = 'assets/slack.png';
   static const String filter = 'assets/filter.png';
-  static const String boroda = 'assets/mac_boroda.png';
+  static const String jsdaddy = 'assets/jsdaddy.png';
   static const String noAvatar = 'assets/no-avatar.png';
-
-  static String getIconByName(String iconName) {
-    return 'assets/$iconName';
-  }
 }

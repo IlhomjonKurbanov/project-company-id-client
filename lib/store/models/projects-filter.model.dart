@@ -4,16 +4,18 @@ import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class ProjectsFilterModel {
-  ProjectsFilterModel({this.user, this.stack, this.spec, this.status});
-  UserModel user;
-  StackModel stack;
-  ProjectSpecModel spec;
-  ProjectStatusModel status;
+  ProjectsFilterModel(
+      {this.user, this.stack, required this.spec, required this.status});
+  UserModel? user;
+  StackModel? stack;
+  ProjectSpecModel? spec;
+  ProjectStatusModel? status;
+
   ProjectsFilterModel copyWith({
-    ProjectStatusModel status,
-    ProjectSpecModel spec,
-    UserModel user,
-    StackModel stack,
+    ProjectStatusModel? status,
+    ProjectSpecModel? spec,
+    UserModel? user,
+    StackModel? stack,
   }) =>
       ProjectsFilterModel(
         status: status ?? this.status,

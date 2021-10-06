@@ -24,14 +24,14 @@ class GetHolidaysLogsSuccess {
   Map<DateTime, List<CalendarModel>> holidays;
 }
 
-class SetCurrentDay {
-  SetCurrentDay(this.currentDay);
-  DateTime currentDay;
-}
-
 class SetCurrentMonth {
   SetCurrentMonth(this.currentMonth);
   DateTime currentMonth;
+}
+
+class SetFocusedDay {
+  SetFocusedDay(this.focusedDay);
+  DateTime focusedDay;
 }
 
 class GetLogByDatePending {

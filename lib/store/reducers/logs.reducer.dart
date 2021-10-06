@@ -1,43 +1,42 @@
+import 'package:collection/collection.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
+import 'package:company_id_new/store/models/current-day.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux/redux.dart';
-import 'package:company_id_new/store/models/current-day.model.dart';
 
-final Reducer<Map<DateTime, List<CalendarModel>>> logsReducer =
-    combineReducers<Map<DateTime, List<CalendarModel>>>(<
-        Map<DateTime, List<CalendarModel>> Function(
-            Map<DateTime, List<CalendarModel>>, dynamic)>[
-  TypedReducer<Map<DateTime, List<CalendarModel>>, GetLogsSuccess>(_saveLogs),
+final Reducer<Map<DateTime, List<CalendarModel>>?> logsReducer =
+    combineReducers<Map<DateTime, List<CalendarModel>>?>(<
+        Map<DateTime, List<CalendarModel>>? Function(
+            Map<DateTime, List<CalendarModel>>?, dynamic)>[
+  TypedReducer<Map<DateTime, List<CalendarModel>>?, GetLogsSuccess>(_saveLogs),
 ]);
 
-Map<DateTime, List<CalendarModel>> _saveLogs(
-    Map<DateTime, List<CalendarModel>> logs, GetLogsSuccess action) {
-  return action.logs;
-}
+Map<DateTime, List<CalendarModel>>? _saveLogs(
+        Map<DateTime, List<CalendarModel>>? logs, GetLogsSuccess action) =>
+    action.logs;
 
-final Reducer<StatisticModel> statisticReducers = combineReducers<
-    StatisticModel>(<StatisticModel Function(StatisticModel, dynamic)>[
-  TypedReducer<StatisticModel, GetStatisticSuccess>(_saveStatistic)
+final Reducer<StatisticModel?> statisticReducers = combineReducers<
+    StatisticModel?>(<StatisticModel? Function(StatisticModel?, dynamic)>[
+  TypedReducer<StatisticModel?, GetStatisticSuccess>(_saveStatistic)
 ]);
 
-StatisticModel _saveStatistic(StatisticModel logs, GetStatisticSuccess action) {
-  return action.statistic;
-}
+StatisticModel? _saveStatistic(
+        StatisticModel? logs, GetStatisticSuccess action) =>
+    action.statistic;
 
-final Reducer<VacationSickAvailable> vacacationSickReducers =
-    combineReducers<VacationSickAvailable>(<
-        VacationSickAvailable Function(VacationSickAvailable, dynamic)>[
-  TypedReducer<VacationSickAvailable, SetVacationSickAvail>(
+final Reducer<VacationSickAvailable?> vacacationSickReducers =
+    combineReducers<VacationSickAvailable?>(<
+        VacationSickAvailable? Function(VacationSickAvailable?, dynamic)>[
+  TypedReducer<VacationSickAvailable?, SetVacationSickAvail>(
       _saveVacationSickAvail)
 ]);
 
-VacationSickAvailable _saveVacationSickAvail(
-    VacationSickAvailable vacationSickAvailable, SetVacationSickAvail action) {
-  return action.vacationSickAvailable;
-}
+VacationSickAvailable? _saveVacationSickAvail(
+        VacationSickAvailable? state, SetVacationSickAvail action) =>
+    action.vacationSickAvailable;
 
 final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<
     List<LogModel>>(<List<LogModel> Function(List<LogModel>, dynamic)>[
@@ -51,17 +50,15 @@ final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<
 ]);
 
 List<LogModel> _saveLogsByDate(
-    List<LogModel> logs, GetLogByDateSuccess action) {
-  return action.logs;
-}
+        List<LogModel> logs, GetLogByDateSuccess action) =>
+    action.logs;
 
-List<LogModel> _addRequest(List<LogModel> logs, RequestVacationSuccess action) {
-  return <LogModel>[action.vacation, ...logs];
-}
+List<LogModel> _addRequest(
+        List<LogModel> logs, RequestVacationSuccess action) =>
+    <LogModel>[action.vacation, ...logs];
 
-List<LogModel> _saveLogByDate(List<LogModel> logs, AddLogSuccess action) {
-  return <LogModel>[action.log, ...logs];
-}
+List<LogModel> _saveLogByDate(List<LogModel> logs, AddLogSuccess action) =>
+    <LogModel>[action.log, ...logs];
 
 List<LogModel> _editLogByDate(List<LogModel> logs, EditLogSuccess action) {
   final List<LogModel> newLogs = <LogModel>[...logs];
@@ -86,25 +83,25 @@ List<LogModel> _deleteLogByDate(List<LogModel> logs, DeleteLogSuccess action) {
   return newLogs;
 }
 
-final Reducer<Map<DateTime, List<CalendarModel>>> holidaysReducers =
-    combineReducers<Map<DateTime, List<CalendarModel>>>(<
-        Map<DateTime, List<CalendarModel>> Function(
-            Map<DateTime, List<CalendarModel>>, dynamic)>[
-  TypedReducer<Map<DateTime, List<CalendarModel>>, GetHolidaysLogsSuccess>(
+final Reducer<Map<DateTime, List<CalendarModel>>?> holidaysReducers =
+    combineReducers<Map<DateTime, List<CalendarModel>>?>(<
+        Map<DateTime, List<CalendarModel>>? Function(
+            Map<DateTime, List<CalendarModel>>?, dynamic)>[
+  TypedReducer<Map<DateTime, List<CalendarModel>>?, GetHolidaysLogsSuccess>(
       _saveHolidays),
 ]);
 
-Map<DateTime, List<CalendarModel>> _saveHolidays(
-    Map<DateTime, List<CalendarModel>> holidays,
+Map<DateTime, List<CalendarModel>>? _saveHolidays(
+    Map<DateTime, List<CalendarModel>>? holidays,
     GetHolidaysLogsSuccess action) {
-  final Map<DateTime, List<CalendarModel>> newHolidays =
+  final Map<DateTime, List<CalendarModel>>? newHolidays =
       <DateTime, List<CalendarModel>>{};
   for (final MapEntry<DateTime, List<CalendarModel>> log
       in action.holidays.entries) {
-    if (log.value.firstWhere((CalendarModel log) => log.holiday != null,
-            orElse: () => null) !=
+    if (log.value
+            .firstWhereOrNull((CalendarModel log) => log.holiday != null) !=
         null) {
-      newHolidays.addAll(<DateTime, List<CalendarModel>>{log.key: log.value});
+      newHolidays!.addAll(<DateTime, List<CalendarModel>>{log.key: log.value});
     }
   }
   return newHolidays;
@@ -112,14 +109,12 @@ Map<DateTime, List<CalendarModel>> _saveHolidays(
 
 final Reducer<CurrentDateModel> currentDateReducers = combineReducers<
     CurrentDateModel>(<CurrentDateModel Function(CurrentDateModel, dynamic)>[
-  TypedReducer<CurrentDateModel, SetCurrentDay>(_setDay),
+  TypedReducer<CurrentDateModel, SetFocusedDay>(_setFocused),
   TypedReducer<CurrentDateModel, SetCurrentMonth>(_setMonth)
 ]);
 
-CurrentDateModel _setDay(CurrentDateModel state, SetCurrentDay action) {
-  return state.copyWith(currentDay: action.currentDay);
-}
+CurrentDateModel _setFocused(CurrentDateModel state, SetFocusedDay action) =>
+    state.copyWith(focusedDay: action.focusedDay);
 
-CurrentDateModel _setMonth(CurrentDateModel state, SetCurrentMonth action) {
-  return state.copyWith(currentMohth: action.currentMonth);
-}
+CurrentDateModel _setMonth(CurrentDateModel state, SetCurrentMonth action) =>
+    state.copyWith(currentMohth: action.currentMonth);

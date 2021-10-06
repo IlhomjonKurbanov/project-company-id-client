@@ -6,6 +6,5 @@ final Reducer<List<StackModel>> stackReducers = combineReducers<
     List<StackModel>>(<List<StackModel> Function(List<StackModel>, dynamic)>[
   TypedReducer<List<StackModel>, GetStackSuccess>(_getStack),
 ]);
-List<StackModel> _getStack(List<StackModel> rules, GetStackSuccess action) {
-  return action.stack;
-}
+List<StackModel> _getStack(List<StackModel> rules, GetStackSuccess action) =>
+    action.stack;

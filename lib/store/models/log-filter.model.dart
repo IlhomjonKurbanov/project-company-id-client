@@ -4,20 +4,19 @@ import 'package:company_id_new/store/models/user.model.dart';
 
 class LogFilterModel {
   LogFilterModel({
-    this.logType,
+    required this.logType,
     this.user,
     this.project,
   });
-  FilterType logType;
-  UserModel user;
-  ProjectModel project;
+  FilterType? logType;
+  UserModel? user;
+  ProjectModel? project;
 
-  LogFilterModel copyWith({
-    FilterType logType,
-    String vacation,
-    UserModel user,
-    ProjectModel project,
-  }) =>
+  LogFilterModel copyWith(
+          {FilterType? logType,
+          String? vacation,
+          UserModel? user,
+          ProjectModel? project}) =>
       LogFilterModel(
         logType: logType ?? this.logType,
         user: user ?? this.user,
@@ -28,7 +27,7 @@ class LogFilterModel {
 class FilterType {
   FilterType(this.title, this.logType, {this.vacationType});
   String title;
-  VacationType vacationType;
+  VacationType? vacationType;
   LogType logType;
 }
 
