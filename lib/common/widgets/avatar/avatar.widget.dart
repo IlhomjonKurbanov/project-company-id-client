@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:company_id_new/common/helpers/app-images.dart';
+import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:flutter/material.dart';
 
 class AvatarWidget extends StatelessWidget {
@@ -9,12 +9,18 @@ class AvatarWidget extends StatelessWidget {
   final double sizes;
 
   @override
-  Widget build(BuildContext context) => Container(
-      width: sizes,
-      height: sizes,
-      child: ClipOval(
-          child: avatar != null
-              ? Image.memory(base64.decode(avatar!.split(',').last),
-                  gaplessPlayback: true, fit: BoxFit.cover)
-              : Image.asset(AppImages.noAvatar)));
+  Widget build(BuildContext context) {
+    return Container(
+        width: sizes, height: sizes, child: ClipOval(child: _getImage()));
+  }
+
+  Widget _getImage() {
+    try {
+      return Image.memory(base64.decode(avatar!.split(',').last),
+          gaplessPlayback: true, fit: BoxFit.cover);
+    } catch (e) {
+      return Image.network('${AppConstants.baseUrl}/user/avatar/$avatar',
+          gaplessPlayback: true, fit: BoxFit.cover);
+    }
+  }
 }

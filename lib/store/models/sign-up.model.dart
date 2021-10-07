@@ -33,9 +33,7 @@ class SignupModel {
       'avatar': await MultipartFile.fromFile(avatar.path, filename: fileName),
       'github': github,
       'dob': date,
-      // 'token': token,
-      'token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZrcmlAanNkYWRkeS5pbyIsImlhdCI6MTYzMzYxMDc0OSwiZXhwIjoxNjMzNjE0MzQ5fQ.4Mvgm2kqEj0JozRHeq38Ut_rFvVtA9Vrd_JfLumBgO4',
+      'token': token,
       'phone': phone,
       'lastName': lastName,
       'name': name,
