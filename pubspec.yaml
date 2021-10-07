@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^1.0.3
   date_format: ^2.0.4
   dio: ^4.0.0
+  firebase_dynamic_links: ^2.0.10
   flutter:
     sdk: flutter
   flutter_redux: ^0.8.2

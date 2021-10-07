@@ -6,7 +6,6 @@ import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
 import 'package:company_id_new/common/wrappers/popup.wrapper.dart';
-import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';

@@ -3,7 +3,6 @@ import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/helpers/app-validators.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
-import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';

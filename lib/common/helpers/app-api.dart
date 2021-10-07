@@ -18,19 +18,7 @@ class AppApi {
         }
         dio.interceptors.requestLock.unlock();
         return handler.next(requestOptions);
-      }, onError: (DioError e, ErrorInterceptorHandler handler) {
-        print('app-api dioerror: $e');
-        print(e.response?.data);
-        // if (e.response?.data != null) {
-        //   return e.response?.data['error'];
-        // }
-        // return e.response;
-        return handler.next(e);
-      }, onResponse:
-          (Response<dynamic> res, ResponseInterceptorHandler handler) {
-        res.data = res.data['data'];
-        return handler.next(res);
-      }),
+      })
     ]);
   }
 

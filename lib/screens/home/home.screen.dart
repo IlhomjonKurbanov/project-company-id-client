@@ -3,8 +3,6 @@ import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
-import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
-import 'package:company_id_new/common/wrappers/loader.wrapper.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';

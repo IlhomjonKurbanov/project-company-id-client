@@ -17,7 +17,7 @@ Stream<void> errorEpic(
           print(error);
           String? errorText =
               error is DioError && error.response?.data is Map<String, dynamic>
-                  ? error.response?.data['error'] as String
+                  ? error.response?.data['message'] as String
                   : null;
           if (error is String) {
             errorText = error;
