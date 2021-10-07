@@ -60,47 +60,49 @@ class _EventListWidgetState extends State<EventListWidget> {
           logs: store.state.logsByDate),
       builder: (BuildContext context, _ViewModel state) =>
           ListView(children: <Widget>[
-            state.filter?.user?.id != null ||
-                    state.authUser?.position == Positions.Developer &&
-                        state.vacationSickAvailable != null
-                ? _buildVacations(state)
-                : const SizedBox(),
-            state.filter != null ? _buildFilter(state) : const SizedBox(),
-            state.logs
-                    .where((LogModel log) => log.type == LogType.Holiday)
-                    .toList()
-                    .isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Center(
-                        child: Text(
-                            state.logs
-                                .where((LogModel log) =>
-                                    log.type == LogType.Holiday)
-                                .toList()[0]
-                                .name!,
-                            style: const TextStyle(
-                                fontSize: 24, color: AppColors.main))))
-                : const SizedBox(),
-            state.logs
-                    .where((LogModel log) => log.type == LogType.Birthday)
-                    .toList()
-                    .isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 16),
-                    child: Center(
-                        child: Text(_getBirthdays(state.logs),
-                            style: const TextStyle(
-                                fontSize: 18, color: AppColors.orange))))
-                : const SizedBox(),
-            state.logs.isEmpty
-                ? const Padding(
-                    padding: EdgeInsets.only(top: 24, bottom: 16),
-                    child: Center(
-                        child: Text('No data',
-                            style: TextStyle(
-                                fontSize: 18, color: AppColors.main))))
-                : const SizedBox(),
+            if (state.filter?.user?.id != null ||
+                state.authUser?.position == Positions.Developer &&
+                    state.vacationSickAvailable != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: _buildVacations(state),
+              ),
+            if (state.filter != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buildFilter(state),
+              ),
+            if (state.logs
+                .where((LogModel log) => log.type == LogType.Holiday)
+                .toList()
+                .isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Center(
+                    child: Text(
+                        state.logs
+                            .where(
+                                (LogModel log) => log.type == LogType.Holiday)
+                            .toList()[0]
+                            .name!,
+                        style: const TextStyle(
+                            fontSize: 24, color: AppColors.main))),
+              ),
+            if (state.logs
+                .where((LogModel log) => log.type == LogType.Birthday)
+                .toList()
+                .isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Center(
+                    child: Text(_getBirthdays(state.logs),
+                        style: const TextStyle(
+                            fontSize: 18, color: AppColors.orange))),
+              ),
+            if (state.logs.isEmpty)
+              const Center(
+                  child: Text('No data',
+                      style: TextStyle(fontSize: 18, color: AppColors.main))),
             ...state.logs
                 .where((LogModel log) => log.type == LogType.Vacation)
                 .map((LogModel log) =>
@@ -129,9 +131,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
                         textSpan2: TextSpan(text: ' - ${log.desc}', style: const TextStyle(color: Colors.white)),
-                        onTap: () =>  store.dispatch(PushAction(
-                              ProjectDetailsScreen(projectId: log.project!.id!),
-                              log.project!.name)),
+                        onTap: () => store.dispatch(PushAction(ProjectDetailsScreen(projectId: log.project!.id!), log.project!.name)),
                         trailing: Text(log.time!))))
                 .toList()
           ]));
@@ -167,53 +167,46 @@ class _EventListWidgetState extends State<EventListWidget> {
                 }))
       ];
 
-  Widget _buildFilter(_ViewModel state) => Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Wrap(children: <Widget>[
-        state.filter?.logType?.logType == LogType.Timelog
-            ? InkWell(
-                onTap: () {
-                  store.dispatch(SaveLogFilter(store.state.filter!
-                      .copyWith(logType: FilterType('All', LogType.All))));
-                },
-                child: FilterItemWidget(
-                    title: state.filter!.logType!.title, icon: Icons.history))
-            : const SizedBox(),
-        state.filter?.logType?.logType == LogType.Vacation
-            ? InkWell(
-                onTap: () {
-                  store.dispatch(SaveLogFilter(store.state.filter!
-                      .copyWith(logType: FilterType('All', LogType.All))));
-                },
-                child: FilterItemWidget(
-                    title: AppConverting.getVacationTypeString(
-                        state.filter!.logType!.vacationType!),
-                    icon: Icons.history))
-            : const SizedBox(),
-        state.filter?.user?.id != null
-            ? InkWell(
-                onTap: () {
-                  final LogFilterModel filter = store.state.filter!.copyWith()
-                    ..user = null;
-                  store.dispatch(SaveLogFilter(filter));
-                },
-                child: FilterItemWidget(
-                    title:
-                        '${state.filter!.user!.name} ${state.filter!.user!.lastName}',
-                    icon: Icons.person))
-            : const SizedBox(),
-        state.filter?.project?.id != null
-            ? InkWell(
-                onTap: () {
-                  final LogFilterModel filter = store.state.filter!.copyWith()
-                    ..project = null;
-                  store.dispatch(SaveLogFilter(filter));
-                },
-                child: FilterItemWidget(
-                    title: state.filter!.project!.name,
-                    icon: Icons.desktop_mac))
-            : const SizedBox()
-      ]));
+  Widget _buildFilter(_ViewModel state) => Wrap(children: <Widget>[
+        if (state.filter?.logType?.logType == LogType.Timelog)
+          InkWell(
+              onTap: () {
+                store.dispatch(SaveLogFilter(store.state.filter!
+                    .copyWith(logType: FilterType('All', LogType.All))));
+              },
+              child: FilterItemWidget(
+                  title: state.filter!.logType!.title, icon: Icons.history)),
+        if (state.filter?.logType?.logType == LogType.Vacation)
+          InkWell(
+              onTap: () {
+                store.dispatch(SaveLogFilter(store.state.filter!
+                    .copyWith(logType: FilterType('All', LogType.All))));
+              },
+              child: FilterItemWidget(
+                  title: AppConverting.getVacationTypeString(
+                      state.filter!.logType!.vacationType!),
+                  icon: Icons.history)),
+        if (state.filter?.user?.id != null)
+          InkWell(
+              onTap: () {
+                final LogFilterModel filter = store.state.filter!.copyWith()
+                  ..user = null;
+                store.dispatch(SaveLogFilter(filter));
+              },
+              child: FilterItemWidget(
+                  title:
+                      '${state.filter!.user!.name} ${state.filter!.user!.lastName}',
+                  icon: Icons.person)),
+        if (state.filter?.project?.id != null)
+          InkWell(
+              onTap: () {
+                final LogFilterModel filter = store.state.filter!.copyWith()
+                  ..project = null;
+                store.dispatch(SaveLogFilter(filter));
+              },
+              child: FilterItemWidget(
+                  title: state.filter!.project!.name, icon: Icons.desktop_mac))
+      ]);
 
   Widget _buildVacations(_ViewModel state) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

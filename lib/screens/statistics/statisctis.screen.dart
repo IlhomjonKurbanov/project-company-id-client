@@ -95,6 +95,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   bool _isExisted(AppState state) {
     final String authId = state.user!.id;
     return state.logsByDate.any(
-        (LogModel log) => log.user!.id == authId && log.vacationType != null);
+        (LogModel log) => log.user?.id == authId && log.vacationType != null);
   }
 }
