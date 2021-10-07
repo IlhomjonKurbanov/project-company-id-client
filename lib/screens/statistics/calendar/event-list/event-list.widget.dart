@@ -5,6 +5,7 @@ import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget
 import 'package:company_id_new/common/widgets/app-vacation-tile/app-vacation.tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
+import 'package:company_id_new/screens/project-details/project-details.screen.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.popup.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
@@ -116,20 +117,21 @@ class _EventListWidgetState extends State<EventListWidget> {
                     child: AppListTile(
                         leading: state.authUser?.id != log.user!.id ||
                                 state.authUser?.position == Positions.Owner
-                            ? AvatarWidget(avatar: log.user!.avatar, sizes: 50)
+                            ? InkWell(
+                                onTap: () => store.dispatch(PushAction(
+                                    UserScreen(uid: log.user!.id),
+                                    '${log.user!.name} ${log.user!.lastName}')),
+                                child: AvatarWidget(
+                                    avatar: log.user!.avatar, sizes: 50))
                             : null,
                         textSpan: TextSpan(
                             text: log.project!.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.white)),
-                        textSpan2: TextSpan(
-                            text: ' - ${log.desc}',
-                            style: const TextStyle(color: Colors.white)),
-                        onTap: () => store.dispatch(PushAction(
-                            UserScreen(uid: log.user!.id),
-                            '${log.user!.name} ${log.user!.lastName}')),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
+                        textSpan2: TextSpan(text: ' - ${log.desc}', style: const TextStyle(color: Colors.white)),
+                        onTap: () =>  store.dispatch(PushAction(
+                              ProjectDetailsScreen(projectId: log.project!.id!),
+                              log.project!.name)),
                         trailing: Text(log.time!))))
                 .toList()
           ]));

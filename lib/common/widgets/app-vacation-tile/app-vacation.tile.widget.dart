@@ -28,56 +28,57 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, UserModel>(
       converter: (Store<AppState> store) => store.state.user!,
-      builder: (BuildContext context, UserModel user) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-          child: Slidable(
-              controller: widget.slidableController,
-              actionPane: const SlidableDrawerActionPane(),
-              actionExtentRatio: 0.1,
-              enabled: user.position == Positions.Owner &&
-                  widget.log.status == RequestStatus.Pending,
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    color: AppColors.bg,
-                    iconWidget: IconButton(
-                        icon: const Icon(Icons.check),
-                        color: Colors.green,
-                        onPressed: () {
-                          store.dispatch(ChangeStatusVacationPending(
-                              widget.log.id!, RequestStatus.Approved));
-                          widget.slidableController.activeState?.close();
-                        })),
-                IconSlideAction(
-                  color: AppColors.bg,
-                  iconWidget: IconButton(
-                      icon: const Icon(Icons.close),
-                      color: AppColors.main,
-                      onPressed: () {
-                        store.dispatch(ChangeStatusVacationPending(
-                          widget.log.id!,
-                          RequestStatus.Rejected,
-                        ));
-                        widget.slidableController.activeState?.close();
-                      }),
-                ),
-              ],
-              child: AppListTile(
-                  onTap: () => store.dispatch(PushAction(
-                      UserScreen(uid: widget.log.user!.id),
-                      '${widget.log.user!.name} ${widget.log.user!.lastName}')),
-                  leading: user.position == Positions.Owner
-                      ? AvatarWidget(avatar: widget.log.user!.avatar, sizes: 50)
-                      : null,
-                  textSpan: TextSpan(
-                      text: AppConverting.getVacationTypeString(
-                          widget.log.vacationType!),
-                      style: TextStyle(
-                          color: AppColors.getColorTextVacation(
-                              AppConverting.getStringFromRequestStatus(
-                                  widget.log.status!)),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15)),
-                  textSpan2: TextSpan(
-                      text: ' - ${widget.log.desc}',
-                      style: const TextStyle(color: Colors.white))))));
+      builder: (BuildContext context, UserModel user) => Slidable(
+          controller: widget.slidableController,
+          actionPane: const SlidableDrawerActionPane(),
+          actionExtentRatio: 0.1,
+          enabled: user.position == Positions.Owner &&
+              widget.log.status == RequestStatus.Pending,
+          secondaryActions: <Widget>[
+            IconSlideAction(
+                color: AppColors.bg,
+                iconWidget: IconButton(
+                    icon: const Icon(Icons.check),
+                    color: Colors.green,
+                    onPressed: () {
+                      store.dispatch(ChangeStatusVacationPending(
+                          widget.log.id!, RequestStatus.Approved));
+                      widget.slidableController.activeState?.close();
+                    })),
+            IconSlideAction(
+              color: AppColors.bg,
+              iconWidget: IconButton(
+                  icon: const Icon(Icons.close),
+                  color: AppColors.main,
+                  onPressed: () {
+                    store.dispatch(ChangeStatusVacationPending(
+                      widget.log.id!,
+                      RequestStatus.Rejected,
+                    ));
+                    widget.slidableController.activeState?.close();
+                  }),
+            ),
+          ],
+          child: AppListTile(
+              onTap: () {},
+              leading: user.position == Positions.Owner
+                  ? InkWell(
+                      onTap: () => store.dispatch(PushAction(
+                          UserScreen(uid: widget.log.user!.id),
+                          '${widget.log.user!.name} ${widget.log.user!.lastName}')),
+                      child: AvatarWidget(
+                          avatar: widget.log.user!.avatar, sizes: 50))
+                  : null,
+              textSpan: TextSpan(
+                  text: AppConverting.getVacationTypeString(
+                      widget.log.vacationType!),
+                  style: TextStyle(
+                      color: AppColors.getColorTextVacation(
+                          AppConverting.getStringFromRequestStatus(
+                              widget.log.status!)),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15)),
+              textSpan2: TextSpan(
+                  text: ' - ${widget.log.desc}',
+                  style: const TextStyle(color: Colors.white)))));
 }

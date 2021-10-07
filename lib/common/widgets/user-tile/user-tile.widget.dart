@@ -30,10 +30,11 @@ class UserTileWidget extends StatelessWidget {
       secondaryActions: secondaryActions,
       child: AppListTile(
           onTap: () {
-            if (authPosition == Positions.Owner) {
-              store.dispatch(PushAction(
-                  UserScreen(uid: user.id), '${user.name} ${user.lastName}'));
+            if (user.endDate != null && authPosition != Positions.Owner) {
+              return;
             }
+            store.dispatch(PushAction(
+                UserScreen(uid: user.id), '${user.name} ${user.lastName}'));
           },
           leading: AvatarWidget(avatar: user.avatar, sizes: 50),
           trailing: Text(AppConverting.getPositionFromString(user.position),
