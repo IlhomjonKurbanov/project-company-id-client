@@ -109,7 +109,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     state.filter?.project == null &&
                     state.filter?.logType?.logType != LogType.Vacation ||
                 state.user?.position! == Positions.Developer
-            ? '\n ${state.statistic!.workedOut} / ${state.statistic!.toBeWorkedOut} / ${state.statistic!.overtime} '
+            ? '\n ${state.statistic?.workedOut} / ${state.statistic?.toBeWorkedOut} / ${state.statistic?.overtime} '
             : '';
         final String mmYYYY =
             '${AppConverters.monthYearFromDate(date).split(' ')[0]} ${AppConverters.monthYearFromDate(date).split(' ')[1]}';

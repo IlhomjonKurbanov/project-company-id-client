@@ -24,15 +24,15 @@ class _ViewModel {
   UserModel user;
 }
 
-class AddVacationDialogPopup extends StatefulWidget {
-  const AddVacationDialogPopup({required this.choosedDate});
+class AddVacationPopup extends StatefulWidget {
+  const AddVacationPopup({required this.choosedDate});
   final DateTime choosedDate;
 
   @override
-  _AddVacationDialogPopupState createState() => _AddVacationDialogPopupState();
+  _AddVacationPopupState createState() => _AddVacationPopupState();
 }
 
-class _AddVacationDialogPopupState extends State<AddVacationDialogPopup> {
+class _AddVacationPopupState extends State<AddVacationPopup> {
   VacationType? selectedReason;
   List<VacationType> reasons = <VacationType>[
     VacationType.VacNonPaid,
@@ -98,7 +98,8 @@ class _AddVacationDialogPopupState extends State<AddVacationDialogPopup> {
                 const SizedBox(width: 12),
                 AppButtonWidget(
                     title: 'Cancel',
-                    onClick: () => store.dispatch(PopAction(isExternal: true)))
+                    onClick: () => store.dispatch(
+                        const PopAction(changeTitle: false, isExternal: true)))
               ])));
 
   void _request(_ViewModel state) {

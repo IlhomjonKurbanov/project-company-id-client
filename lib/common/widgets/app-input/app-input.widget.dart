@@ -28,9 +28,7 @@ class AppInput extends StatefulWidget {
 class _AppInputState extends State<AppInput> {
   @override
   Widget build(BuildContext context) => TextFormField(
-      autovalidateMode: widget.myController.text.isNotEmpty
-          ? AutovalidateMode.always
-          : AutovalidateMode.disabled,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: widget.validator,
       obscureText: widget.obscureText,
       keyboardType: widget.keyboardType,

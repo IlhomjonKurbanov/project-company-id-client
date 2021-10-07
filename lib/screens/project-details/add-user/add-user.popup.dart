@@ -69,7 +69,8 @@ class _AddUserPopupState extends State<AddUserPopup> {
               color: AppColors.green,
               title: 'Add',
               onClick: () {
-                store.dispatch(PopAction(isExternal: true));
+                store.dispatch(
+                    const PopAction(changeTitle: false, isExternal: true));
                 store.dispatch(AddUserToProjectPending(
                     selectedUser!, state.project, false));
               })));

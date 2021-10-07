@@ -44,7 +44,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
       onWillChange: (_ViewModel? prev, _ViewModel curr) {
         if (prev!.requests.length != curr.requests.length &&
             curr.requests.isEmpty) {
-          store.dispatch(PopAction(changeTitle: true));
+          store.dispatch(const PopAction(changeTitle: true));
         }
       },
       builder: (BuildContext context, _ViewModel state) => SmartRefresher(

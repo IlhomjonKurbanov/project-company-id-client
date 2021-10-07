@@ -50,8 +50,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         context: context,
         useRootNavigator: true,
         isScrollControlled: true,
-        builder: (BuildContext context) => AddVacationDialogPopup(
-            choosedDate: store.state.currentDate.focusedDay));
+        builder: (BuildContext context) =>
+            AddVacationPopup(choosedDate: store.state.currentDate.focusedDay));
   }
 
   List<SpeedDialChild> _getSpeedDials() {

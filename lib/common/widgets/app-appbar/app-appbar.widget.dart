@@ -49,7 +49,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AvatarWidget(avatar: state.user?.avatar, sizes: 20))),
-          title: Text(state.titles.last),
+          title: Text(state.titles.isNotEmpty ? state.titles.last : ''),
           actions: <Widget>[
             state.requests.isEmpty ||
                     store.state.user!.position != Positions.Owner

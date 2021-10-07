@@ -11,6 +11,9 @@ final Reducer<List<String>> titleReducer = combineReducers<
 ]);
 
 List<String> _addTitle(List<String> titles, dynamic action) {
+  if (action is PushAction && action.isExternal) {
+    return titles;
+  }
   final List<String> newTitles = <String>[...titles, action.title as String];
   return newTitles;
 }
@@ -19,7 +22,7 @@ List<String> _setClearTitle(List<String> titles, dynamic action) =>
     <String>[action.title as String];
 
 List<String> _removeLast(List<String> titles, PopAction action) {
-  if (!action.changeTitle) {
+  if (!action.changeTitle || action.isExternal) {
     return titles;
   }
   final List<String> newTitles = <String>[...titles];

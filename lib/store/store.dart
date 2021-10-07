@@ -43,10 +43,10 @@ final AppState initalState = AppState(
     filterLogsUsersProjects: FilterLogsUsersProjects(
         projects: <ProjectModel>[], users: <UserModel>[]),
     users: <UserModel>[]);
-final Store<AppState> store =
-    Store<AppState>(appStateReducer, initialState: initalState,
-        // ignore: always_specify_types
-        middleware: [
+final Store<AppState> store = Store<AppState>(appStateReducer,
+    initialState: initalState,
+    middleware: <
+        dynamic Function(Store<AppState>, dynamic, dynamic Function(dynamic))>[
       LoggingMiddleware<dynamic>.printer(),
       EpicMiddleware<AppState>(checkTokenEpic), //h
       EpicMiddleware<AppState>(errorEpic), //h
@@ -57,7 +57,6 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(routePushReplacmentEpic), //h
       EpicMiddleware<AppState>(routePopUntilEpic),
       EpicMiddleware<AppState>(getLogByDateEpic), //h
-      EpicMiddleware<AppState>(setPasswordEpic),
       EpicMiddleware<AppState>(getLogsEpic), //h
       EpicMiddleware<AppState>(usersEpic), //h
       EpicMiddleware<AppState>(getProjectsEpic), //h
@@ -83,4 +82,6 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(getStackEpic),
       EpicMiddleware<AppState>(createProjectEpic),
       EpicMiddleware<AppState>(archiveProjectEpic),
+      EpicMiddleware<AppState>(getSignUpLink),
+      EpicMiddleware<AppState>(signUpEpic),
     ]);

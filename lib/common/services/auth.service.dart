@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
+import 'package:company_id_new/store/models/sign-up.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
@@ -25,8 +26,15 @@ mixin AuthService {
     return UserModel.fromJson(res.data as Map<String, dynamic>);
   }
 
-  static Future<void> setPassword(String password) async {
-    await api.dio.post<dynamic>('/auth/set-password',
-        data: <String, dynamic>{'password': password});
+  static Future<UserModel> singUp(SignupModel signup) async {
+    final Response<dynamic> res = await api.dio
+        .post<dynamic>('/auth/signup', data: await signup.toJson());
+    await api.localStorageService
+        .saveTokenKey(res.data['accessToken'] as String);
+    return UserModel.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  static Future<void> getSignUpLink(String email) async {
+    await api.dio.post<dynamic>('/auth/get-link', data: <String, dynamic>{});
   }
 }

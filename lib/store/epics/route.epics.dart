@@ -8,8 +8,13 @@ import 'package:rxdart/rxdart.dart';
 
 Stream<void> routeEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<PushAction>().map((PushAction action) {
-      navigatorKey.currentState?.push<dynamic>(MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => action.destination));
+      if (action.isExternal) {
+        mainNavigatorKey.currentState?.push<dynamic>(MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => action.destination));
+      } else {
+        navigatorKey.currentState?.push<dynamic>(MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => action.destination));
+      }
     });
 
 Stream<void> routePopEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
@@ -20,11 +25,12 @@ Stream<void> routePopEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
         } else {
           mainNavigatorKey.currentState?.pop<dynamic>();
         }
-      }
-      if (action.params != null) {
-        navigatorKey.currentState?.pop<dynamic>(action.params);
       } else {
-        navigatorKey.currentState?.pop<dynamic>();
+        if (action.params != null) {
+          navigatorKey.currentState?.pop<dynamic>(action.params);
+        } else {
+          navigatorKey.currentState?.pop<dynamic>();
+        }
       }
     });
 

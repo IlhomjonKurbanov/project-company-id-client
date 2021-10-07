@@ -55,6 +55,7 @@ Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
                 NotificationType.Success, 'Timelog has been added')),
             AddLogSuccess(action.log),
             GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
+            const PopAction(changeTitle: false, isExternal: true)
           ];
         }).handleError((dynamic e) {
           s.store.dispatch(SetError(e));
@@ -103,7 +104,7 @@ Stream<void> requestVacationEpic(
                           s.store.state.currentDate.currentMohth.toString()),
                       Notify(NotifyModel(
                           NotificationType.Success, 'Request has been added')),
-                      PopAction(isExternal: true)
+                      const PopAction(changeTitle: false, isExternal: true)
                     ])
                 .handleError((dynamic e) {
               s.store.dispatch(SetError(e));

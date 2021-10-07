@@ -154,14 +154,14 @@ class _AddEditTimelogDialogPopupState extends State<AddEditTimelogDialogPopup> {
                 const SizedBox(width: 12),
                 AppButtonWidget(
                     title: 'Cancel',
-                    onClick: () => store.dispatch(PopAction(isExternal: true)))
+                    onClick: () => store.dispatch(
+                        const PopAction(changeTitle: false, isExternal: true)))
               ])));
 
   void _addUpdateTimeLog(UserModel user) {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    store.dispatch(PopAction(isExternal: true));
     store.dispatch(SetProjectPrefPending(selectedProject!.name));
 
     widget.log?.id == null

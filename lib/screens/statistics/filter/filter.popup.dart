@@ -267,7 +267,7 @@ class _AdminLogFilterPopupState extends State<AdminLogFilterPopup> {
       if (selectedType?.logType == LogType.All &&
           selectedUser == null &&
           selectedProject == null) {
-        store.dispatch(PopAction(changeTitle: false, isExternal: true));
+        store.dispatch(const PopAction(changeTitle: false, isExternal: true));
         return;
       }
       final LogFilterModel filter =

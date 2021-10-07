@@ -17,3 +17,5 @@ enum NotificationType { Error, Warning, Success }
 enum Positions { Owner, Developer }
 
 enum RequestStatus { Approved, Rejected, Pending }
+
+enum ImagePickerType { camera, gallery }

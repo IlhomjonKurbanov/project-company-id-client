@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-helper.dart';
 import 'package:company_id_new/common/helpers/app-validators.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/common/widgets/stack/stack.widget.dart';
@@ -223,24 +224,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   Future<void> _chooseDate() async {
-    final DateTime today = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: today,
-        firstDate: DateTime(1950, 8),
-        lastDate: today,
-        builder: (BuildContext context, Widget? child) => Theme(
-            data: Theme.of(context).copyWith(
-              primaryColor: AppColors.semiGrey,
-              colorScheme: const ColorScheme.light(
-                  primary: AppColors.main, onSurface: Colors.white),
-            ),
-            child: child!));
-    if (picked != null && picked != _selectedDate)
+    final DateTime? picked = await AppHelper.chooseDate(context);
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _startDateController.text =
             AppConverters.dateFromString(picked.toString());
         _selectedDate = picked;
       });
+    }
   }
 }

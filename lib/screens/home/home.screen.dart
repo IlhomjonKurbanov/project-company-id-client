@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       builder: (BuildContext context, _ViewModel state) => WillPopScope(
           onWillPop: () async {
             if (navigatorKey.currentState!.canPop()) {
-              store.dispatch(PopAction());
+              store.dispatch(const PopAction());
             } else {
               final bool? isConfirm = await showDialog<bool>(
                   barrierDismissible: false,

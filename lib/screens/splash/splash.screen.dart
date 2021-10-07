@@ -1,8 +1,11 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
+import 'package:company_id_new/screens/signup/signup.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
+import 'package:company_id_new/store/store.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -23,26 +26,24 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> initDynamicLinks() async {
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-      print(222);
       final Uri? deepLink = dynamicLink?.link;
-      print(deepLink?.queryParameters);
-      // if (deepLink != null) {
-      //   Navigator.pushNamed(context, deepLink.path);
-      // }
+      if (deepLink != null) {
+        store.dispatch(PushAction(
+            SignupScreen(deepLink.queryParameters['token'] as String), ''));
+      }
     }, onError: (OnLinkErrorException e) async {
-      print('onLinkError');
       print(e.message);
     });
 
-    final PendingDynamicLinkData? data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-    final Uri? deepLink = data?.link;
-    print(deepLink);
+    // final PendingDynamicLinkData? data =
+    //     await FirebaseDynamicLinks.instance.getInitialLink();
+    // final Uri? deepLink = data?.link;
+    // print(deepLink);
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      backgroundColor: AppColors.bg,
+      backgroundColor: Colors.white,
       body: StoreConnector<AppState, dynamic>(
           converter: (Store<AppState> store) {},
           onInit: (Store<AppState> store) {

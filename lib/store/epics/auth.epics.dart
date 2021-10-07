@@ -3,7 +3,6 @@ import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/services/auth.service.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/login/login.screen.dart';
-import 'package:company_id_new/screens/set-password/set-password.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -20,20 +19,18 @@ import 'package:rxdart/rxdart.dart';
 Stream<void> checkTokenEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<CheckTokenPending>().switchMap(
-        (CheckTokenPending action) => Stream<UserModel>.fromFuture(
-                AuthService.checkToken())
-            .expand<dynamic>((UserModel user) => <dynamic>[
-                  SetTitle(AppConstants.Statistics),
-                  SignInSuccess(user),
-                  user.position == Positions.Owner
-                      ? GetRequestsPending()
-                      : null,
-                  PushReplacementAction(
-                      user.initialLogin! ? SetPasswordScreen() : HomeScreen(),
-                      isExternal: true)
-                ])
-            .onErrorReturnWith((dynamic e) =>
-                PushReplacementAction(LoginScreen(), isExternal: true)));
+        (CheckTokenPending action) =>
+            Stream<UserModel>.fromFuture(AuthService.checkToken())
+                .expand<dynamic>((UserModel user) => <dynamic>[
+                      SetTitle(AppConstants.Statistics),
+                      SignInSuccess(user),
+                      user.position == Positions.Owner
+                          ? GetRequestsPending()
+                          : null,
+                      PushReplacementAction(HomeScreen(), isExternal: true)
+                    ])
+                .onErrorReturnWith((dynamic e) =>
+                    PushReplacementAction(LoginScreen(), isExternal: true)));
 
 Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<LogoutPending>().switchMap((LogoutPending action) =>
@@ -43,34 +40,41 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
               PushReplacementAction(LoginScreen(), isExternal: true)
             ]));
 
+Stream<void> getSignUpLink(
+        Stream<dynamic> actions, EpicStore<AppState> store) =>
+    actions.whereType<GetSignUpLinkPending>().switchMap(
+        (GetSignUpLinkPending action) =>
+            Stream<void>.fromFuture(AuthService.getSignUpLink(action.email))
+                .expand<dynamic>((_) => <dynamic>[
+                      GetSignUpLinkSuccess(),
+                      Notify(NotifyModel(
+                          NotificationType.Success, 'Please check your email')),
+                      PushAction(LoginScreen(), '', isExternal: true)
+                    ]));
+
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<SignInPending>().switchMap((SignInPending action) =>
         Stream<UserModel>.fromFuture(AuthService.singIn(action))
             .expand<dynamic>((UserModel user) => <dynamic>[
                   SignInSuccess(user),
                   SetTitle(AppConstants.Statistics),
-                  PushReplacementAction(
-                      user.initialLogin! ? SetPasswordScreen() : HomeScreen(),
-                      isExternal: true)
+                  PushReplacementAction(HomeScreen(), isExternal: true)
                 ])
             .handleError((dynamic e) {
           s.store.dispatch(SetError(e));
           s.store.dispatch(SignInError());
         }));
 
-Stream<void> setPasswordEpic(
-        Stream<dynamic> actions, EpicStore<AppState> store) =>
-    actions.whereType<SetPasswordPending>().switchMap(
-        (SetPasswordPending action) =>
-            Stream<void>.fromFuture(AuthService.setPassword(action.password))
-                .expand<dynamic>((_) => <dynamic>[
-                      SetPasswordSuccess,
-                      PushReplacementAction(HomeScreen(), isExternal: true),
-                      SetTitle(AppConstants.Statistics),
-                      Notify(NotifyModel(NotificationType.Success,
-                          'Your password has been changed')),
-                    ])
-                .handleError((dynamic e) {
-              s.store.dispatch(SetError(e));
-              s.store.dispatch(SetPasswordError());
-            }));
+Stream<void> signUpEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
+    actions.whereType<SignupPending>().switchMap((SignupPending action) =>
+        Stream<UserModel>.fromFuture(AuthService.singUp(action.signup))
+            .expand<dynamic>((UserModel user) => <dynamic>[
+                  SignupSuccess(),
+                  SignInSuccess(user),
+                  SetTitle(AppConstants.Statistics),
+                  PushReplacementAction(HomeScreen(), isExternal: true)
+                ])
+            .handleError((dynamic e) {
+          s.store.dispatch(SetError(e));
+          s.store.dispatch(SignupError());
+        }));

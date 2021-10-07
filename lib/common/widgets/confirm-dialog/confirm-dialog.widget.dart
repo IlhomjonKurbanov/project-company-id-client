@@ -20,12 +20,12 @@ class ConfirmDialogWidget extends StatelessWidget {
           actions: <Widget>[
             AppButtonWidget(
                 color: AppColors.green,
-                onClick: () => store.dispatch(PopAction(
+                onClick: () => store.dispatch(const PopAction(
                     params: true, changeTitle: false, isExternal: true)),
                 title: 'Confirm'),
             AppButtonWidget(
                 title: 'Cancel',
-                onClick: () => store.dispatch(PopAction(
+                onClick: () => store.dispatch(const PopAction(
                     params: false, changeTitle: false, isExternal: true)))
           ]);
 }

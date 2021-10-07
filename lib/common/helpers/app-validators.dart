@@ -15,6 +15,16 @@ mixin AppValidators {
     return null;
   }
 
+  static String? validateEmailForlink(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter email';
+    }
+    if (!value.contains('@jsdaddy.io')) {
+      return 'Wrong email';
+    }
+    return null;
+  }
+
   static String? validateIsEmptyNull<T>(T? value, String errorText) {
     if (value == null) {
       return errorText;

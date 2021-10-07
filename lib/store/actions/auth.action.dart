@@ -1,34 +1,44 @@
+import 'package:company_id_new/store/models/sign-up.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class CheckTokenPending {}
 
 class CheckTokenSuccess {
-  CheckTokenSuccess(this.user);
-  UserModel user;
+  const CheckTokenSuccess(this.user);
+  final UserModel user;
 }
 
 class SignInPending {
-  SignInPending(this.email, this.password);
-  String email;
-  String password;
+  const SignInPending(this.email, this.password);
+  final String email;
+  final String password;
 }
 
 class SignInSuccess {
-  SignInSuccess(this.user);
-  UserModel user;
+  const SignInSuccess(this.user);
+  final UserModel user;
 }
 
 class SignInError {}
-
-class SetPasswordPending {
-  SetPasswordPending(this.password);
-  String password;
-}
-
-class SetPasswordSuccess {}
 
 class LogoutPending {}
 
 class LogoutSuccess {}
 
-class SetPasswordError {}
+class GetSignUpLinkPending {
+  const GetSignUpLinkPending(this.email);
+  final String email;
+}
+
+class GetSignUpLinkSuccess {}
+
+class GetSignUpLinkError {}
+
+class SignupPending {
+  const SignupPending(this.signup);
+  final SignupModel signup;
+}
+
+class SignupSuccess {}
+
+class SignupError {}
