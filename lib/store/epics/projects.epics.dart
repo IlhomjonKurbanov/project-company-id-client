@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/services/local-storage.service.dart';
 import 'package:company_id_new/common/services/projects.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
@@ -23,6 +24,7 @@ Stream<void> getProjectsEpic(
         Stream<List<ProjectModel>>.fromFuture(
                 ProjectsService.getProjects(action, store.state.projectsFilter))
             .map((List<ProjectModel> projects) {
+          AppRefreshers.projects.refreshCompleted();
           switch (action.projectTypes) {
             case ProjectsType.Default:
               return GetProjectsSuccess(projects);
@@ -45,8 +47,10 @@ Stream<void> getDetailProjectEpic(
     actions.whereType<GetDetailProjectPending>().switchMap(
         (GetDetailProjectPending action) => Stream<ProjectModel>.fromFuture(
                     ProjectsService.getDetailProject(action.projectId))
-                .map((ProjectModel project) => GetDetailProjectSuccess(project))
-                .handleError((dynamic e) {
+                .map((ProjectModel project) {
+              AppRefreshers.projectdetails.refreshCompleted();
+              return GetDetailProjectSuccess(project);
+            }).handleError((dynamic e) {
               s.store.dispatch(SetError(e));
               s.store.dispatch(GetDetailProjectError());
             }));

@@ -1,6 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
-import 'package:company_id_new/common/helpers/app-validators.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
@@ -10,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-class CheckEmailScreen extends StatefulWidget {
+class ForgotPasswordLinkScreen extends StatefulWidget {
   @override
-  State<CheckEmailScreen> createState() => _CheckEmailScreenState();
+  State<ForgotPasswordLinkScreen> createState() =>
+      ForgotPasswordLinkScreenState();
 }
 
-class _CheckEmailScreenState extends State<CheckEmailScreen> {
+class ForgotPasswordLinkScreenState extends State<ForgotPasswordLinkScreen> {
   final TextEditingController _emailController =
       TextEditingController(text: '');
 
@@ -34,17 +34,14 @@ class _CheckEmailScreenState extends State<CheckEmailScreen> {
                     children: <Widget>[
                       Image.asset(AppImages.jsdaddy),
                       Column(children: <Widget>[
-                        const Text('Sign Up',
+                        const Text('Forgot password',
                             style: TextStyle(
                                 color: AppColors.main,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold)),
                         const SizedBox(height: 24),
                         AppInput(
-                            validator: (String? value) =>
-                                AppValidators.validateEmailForlink(value),
-                            myController: _emailController,
-                            labelText: 'Email'),
+                            myController: _emailController, labelText: 'Email'),
                         const SizedBox(height: 16),
                         Align(
                             alignment: Alignment.center,
@@ -53,10 +50,7 @@ class _CheckEmailScreenState extends State<CheckEmailScreen> {
                                 title: 'Get link',
                                 isLoading: isLoading,
                                 onClick: () {
-                                  if (!_formKey.currentState!.validate()) {
-                                    return;
-                                  }
-                                  store.dispatch(GetSignUpLinkPending(
+                                  store.dispatch(ForgotPasswordSendLinkPending(
                                       _emailController.text));
                                 }))
                       ])

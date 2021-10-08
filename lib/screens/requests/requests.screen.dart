@@ -2,6 +2,7 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
@@ -48,7 +49,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
         }
       },
       builder: (BuildContext context, _ViewModel state) => SmartRefresher(
-          controller: RefreshController(initialRefresh: false),
+          controller: AppRefreshers.requests,
           onRefresh: () => store.dispatch(GetRequestsPending()),
           enablePullDown: true,
           child: state.requests.isEmpty
@@ -58,7 +59,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
   Widget _buildRequests(List<LogModel> requests) => ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: requests.length,
       itemBuilder: (BuildContext context, int index) {
         final LogModel request = requests[index];

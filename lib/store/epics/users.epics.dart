@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/services/users.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
@@ -16,6 +17,7 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
         (GetUsersPending action) =>
             Stream<List<UserModel>>.fromFuture(UsersService.getUsers(action))
                 .map<dynamic>((List<UserModel> users) {
+              AppRefreshers.users.refreshCompleted();
               switch (action.usersType) {
                 case UsersType.CreateProject:
                   return GetUsersForCreatingProjectSuccess(users);
@@ -39,8 +41,10 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
 Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<GetUserPending>().switchMap((GetUserPending action) =>
         Stream<UserModel>.fromFuture(UsersService.getUser(action.id))
-            .map((UserModel user) => GetUserSuccess(user))
-            .handleError((dynamic e) {
+            .map((UserModel user) {
+          AppRefreshers.user.refreshCompleted();
+          return GetUserSuccess(user);
+        }).handleError((dynamic e) {
           s.store.dispatch(SetError(e));
           s.store.dispatch(GetUserError());
         }));

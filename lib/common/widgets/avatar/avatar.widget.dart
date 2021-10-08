@@ -15,12 +15,11 @@ class AvatarWidget extends StatelessWidget {
   }
 
   Widget _getImage() {
-    try {
+    if (avatar!.length > 50) {
       return Image.memory(base64.decode(avatar!.split(',').last),
           gaplessPlayback: true, fit: BoxFit.cover);
-    } catch (e) {
-      return Image.network('${AppConstants.baseUrl}/user/avatar/$avatar',
-          gaplessPlayback: true, fit: BoxFit.cover);
     }
+    return Image.network('${AppConstants.baseUrl}/user/avatar/$avatar',
+        gaplessPlayback: true, fit: BoxFit.cover);
   }
 }

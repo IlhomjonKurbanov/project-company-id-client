@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/services/logs.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -17,14 +18,15 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<GetLogsPending>().switchMap((GetLogsPending action) =>
         Stream<Map<String, dynamic>>.fromFuture(
                 LogService.getLogs(action.date, store.state.filter))
-            .expand<dynamic>((Map<String, dynamic> full) => <dynamic>[
-                  GetLogsSuccess(
-                      full['logs'] as Map<DateTime, List<CalendarModel>>),
-                  GetHolidaysLogsSuccess(
-                      full['logs'] as Map<DateTime, List<CalendarModel>>),
-                  GetStatisticSuccess(full['statistic'] as StatisticModel)
-                ])
-            .handleError((dynamic e) {
+            .expand<dynamic>((Map<String, dynamic> full) {
+          AppRefreshers.statistic.refreshCompleted();
+          return <dynamic>[
+            GetLogsSuccess(full['logs'] as Map<DateTime, List<CalendarModel>>),
+            GetHolidaysLogsSuccess(
+                full['logs'] as Map<DateTime, List<CalendarModel>>),
+            GetStatisticSuccess(full['statistic'] as StatisticModel)
+          ];
+        }).handleError((dynamic e) {
           s.store.dispatch(SetError(e));
           s.store.dispatch(GetLogsError());
         }));
@@ -116,8 +118,10 @@ Stream<void> getRequestsEpic(
     actions.where((dynamic action) => action is GetRequestsPending).switchMap(
         (dynamic action) =>
             Stream<List<LogModel>>.fromFuture(LogService.getRequests())
-                .map((List<LogModel> requests) => GetRequestsSuccess(requests))
-                .handleError((dynamic e) {
+                .map((List<LogModel> requests) {
+              AppRefreshers.requests.refreshCompleted();
+              return GetRequestsSuccess(requests);
+            }).handleError((dynamic e) {
               s.store.dispatch(SetError(e));
               s.store.dispatch(GetRequestsError());
             }));

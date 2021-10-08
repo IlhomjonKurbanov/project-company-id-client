@@ -223,7 +223,6 @@ class _EventListWidgetState extends State<EventListWidget> {
   String _getBirthdays(List<LogModel> logs) {
     final List<LogModel> birthdays =
         logs.where((LogModel log) => log.type == LogType.Birthday).toList();
-    // ignore: avoid_function_literals_in_foreach_calls
     String result = birthdays.length > 1 ? 'Birthdays: ' : 'Birthday: ';
     for (final LogModel log in birthdays) {
       result += '${log.fullName}, ';

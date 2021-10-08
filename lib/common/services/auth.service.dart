@@ -35,6 +35,19 @@ mixin AuthService {
   }
 
   static Future<void> getSignUpLink(String email) async {
-    await api.dio.post<dynamic>('/auth/get-link', data: <String, dynamic>{});
+    await api.dio.post<dynamic>('/auth/pre-signup',
+        data: <String, dynamic>{'email': email});
+  }
+
+  static Future<void> forgotPasswordLink(String email) async {
+    await api.dio.post<dynamic>('/auth/forgot-generate',
+        data: <String, dynamic>{'email': email});
+  }
+
+  static Future<void> forgotChangePassword(ChangePasswordPending action) async {
+    await api.dio.post<dynamic>('/auth/forgot-change', data: <String, dynamic>{
+      'password': action.password,
+      'token': action.token
+    });
   }
 }

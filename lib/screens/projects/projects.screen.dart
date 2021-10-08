@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/helpers/app-helper.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/widgets/app-speed-dial/app-speed-dial.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
 import 'package:company_id_new/screens/create-project/create-project.screen.dart';
@@ -45,18 +46,20 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         }
       },
       builder: (BuildContext context, ProjectsFilterModel? filter) => Scaffold(
-          floatingActionButton: store.state.user!.position == Positions.Owner
-              ? AppSpeedDial(icon: Icons.menu, speedDials: _getSpeedDials())
-              : AppSpeedDial(
-                  icon: Icons.search,
-                  onPress: () => showModalBottomSheet<dynamic>(
-                      context: context,
-                      useRootNavigator: true,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) =>
-                          FilterProjectsPopup())),
+          floatingActionButton: store.state.user == null
+              ? const SizedBox()
+              : store.state.user!.position == Positions.Owner
+                  ? AppSpeedDial(icon: Icons.menu, speedDials: _getSpeedDials())
+                  : AppSpeedDial(
+                      icon: Icons.search,
+                      onPress: () => showModalBottomSheet<dynamic>(
+                          context: context,
+                          useRootNavigator: true,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) =>
+                              FilterProjectsPopup())),
           body: SmartRefresher(
-              controller: RefreshController(initialRefresh: false),
+              controller: AppRefreshers.projects,
               onRefresh: () => store.dispatch(GetProjectsPending()),
               enablePullDown: true,
               child: ListView(children: <Widget>[

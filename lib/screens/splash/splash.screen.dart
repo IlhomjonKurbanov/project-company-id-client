@@ -1,5 +1,7 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
+import 'package:company_id_new/common/services/local-storage.service.dart';
+import 'package:company_id_new/screens/change-password/change-password.screen.dart';
 import 'package:company_id_new/screens/signup/signup.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
@@ -27,23 +29,27 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
       final Uri? deepLink = dynamicLink?.link;
-      if (deepLink != null) {
-        store.dispatch(PushAction(
-            SignupScreen(deepLink.queryParameters['token'] as String), ''));
+      final String? forgotToken = deepLink?.queryParameters['forgotToken'];
+      final String? registerToken = deepLink?.queryParameters['registerToken'];
+      await localStorageService.saveTokenKey('');
+      if (forgotToken != null) {
+        store.dispatch(PushReplacementAction(ChangePasswordScreen(forgotToken),
+            isExternal: true));
+      }
+      if (registerToken != null) {
+        store.dispatch(PushReplacementAction(SignupScreen(registerToken),
+            isExternal: true));
       }
     }, onError: (OnLinkErrorException e) async {
       print(e.message);
     });
 
-    // final PendingDynamicLinkData? data =
-    //     await FirebaseDynamicLinks.instance.getInitialLink();
-    // final Uri? deepLink = data?.link;
-    // print(deepLink);
+    await FirebaseDynamicLinks.instance.getInitialLink();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: StoreConnector<AppState, dynamic>(
           converter: (Store<AppState> store) {},
           onInit: (Store<AppState> store) {

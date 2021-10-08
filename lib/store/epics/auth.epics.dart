@@ -50,7 +50,43 @@ Stream<void> getSignUpLink(
                       Notify(NotifyModel(
                           NotificationType.Success, 'Please check your email')),
                       PushAction(LoginScreen(), '', isExternal: true)
-                    ]));
+                    ])
+                .handleError((dynamic e) {
+              s.store.dispatch(SetError(e));
+              s.store.dispatch(GetSignUpLinkError());
+            }));
+
+Stream<void> forgotPasswordLinkEpic(
+        Stream<dynamic> actions, EpicStore<AppState> store) =>
+    actions.whereType<ForgotPasswordSendLinkPending>().switchMap(
+        (ForgotPasswordSendLinkPending action) => Stream<void>.fromFuture(
+                    AuthService.forgotPasswordLink(action.email))
+                .expand<dynamic>((_) => <dynamic>[
+                      ForgotPasswordSendLinkSuccess(),
+                      Notify(NotifyModel(
+                          NotificationType.Success, 'Please check your email')),
+                      PushAction(LoginScreen(), '', isExternal: true)
+                    ])
+                .handleError((dynamic e) {
+              s.store.dispatch(SetError(e));
+              s.store.dispatch(ForgotPasswordSendLinkError());
+            }));
+
+Stream<void> changePasswordEpic(
+        Stream<dynamic> actions, EpicStore<AppState> store) =>
+    actions.whereType<ChangePasswordPending>().switchMap(
+        (ChangePasswordPending action) =>
+            Stream<void>.fromFuture(AuthService.forgotChangePassword(action))
+                .expand<dynamic>((_) => <dynamic>[
+                      ChangePasswordSuccess(),
+                      Notify(NotifyModel(NotificationType.Success,
+                          'Password has been changed')),
+                      PushAction(LoginScreen(), '', isExternal: true)
+                    ])
+                .handleError((dynamic e) {
+              s.store.dispatch(SetError(e));
+              s.store.dispatch(ChangePasswordError());
+            }));
 
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<SignInPending>().switchMap((SignInPending action) =>

@@ -2,6 +2,7 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/helpers/app-helper.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/widgets/app-speed-dial/app-speed-dial.widget.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.popup.dart';
 import 'package:company_id_new/screens/statistics/add-vacation/add-vacation.popup.dart';
@@ -27,7 +28,7 @@ class StatisticsScreen extends StatefulWidget {
 class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) => SmartRefresher(
-      controller: RefreshController(initialRefresh: false),
+      controller: AppRefreshers.statistic,
       onRefresh: () {
         store.dispatch(
             GetLogsPending('${store.state.currentDate.currentMohth}'));

@@ -204,24 +204,9 @@ class _AdminLogFilterPopupState extends State<AdminLogFilterPopup> {
                                   .toList())))
           ],
           buttonSection: AppButtonWidget(
-              color: AppColors.green, title: 'Apply', onClick: () => _apply()))
-      //  Container(
-      //     width: MediaQuery.of(context).size.width,
-      //     padding: EdgeInsets.only(
-      //         bottom: MediaQuery.of(context).viewInsets.bottom +
-      //             MediaQuery.of(context).padding.bottom),
-      //     child: Padding(
-      //         padding: const EdgeInsets.all(24),
-      //         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      //           const Text('Filters', style: TextStyle(fontSize: 24)),
-      //           const SizedBox(height: 16),
-      //           const SizedBox(height: 32),
-      // AppButtonWidget(
-      //     color: AppColors.green,
-      //     title: 'Apply',
-      //     onClick: () => _apply())
-      //         ])))
-      );
+              color: AppColors.green,
+              title: 'Apply',
+              onClick: () => _apply())));
 
   void _onChangedVacation(String? value) {
     setState(() {

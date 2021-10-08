@@ -42,3 +42,22 @@ class SignupPending {
 class SignupSuccess {}
 
 class SignupError {}
+
+class ForgotPasswordSendLinkPending {
+  const ForgotPasswordSendLinkPending(this.email);
+  final String email;
+}
+
+class ForgotPasswordSendLinkSuccess {}
+
+class ForgotPasswordSendLinkError {}
+
+class ChangePasswordPending {
+  const ChangePasswordPending(this.password, this.token);
+  final String password;
+  final String token;
+}
+
+class ChangePasswordSuccess {}
+
+class ChangePasswordError {}

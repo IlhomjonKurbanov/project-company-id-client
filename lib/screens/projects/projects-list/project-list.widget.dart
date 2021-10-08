@@ -21,9 +21,9 @@ class _ViewModel {
       {required this.projects,
       required this.isLoading,
       this.filter,
-      required this.user});
+      this.user});
   List<ProjectModel> projects;
-  UserModel user;
+  UserModel? user;
   bool isLoading;
   ProjectsFilterModel? filter;
 }
@@ -41,40 +41,40 @@ class _ProjectListWidgetState extends State<ProjectListWidget> {
       converter: (Store<AppState> store) => _ViewModel(
           projects: store.state.projects,
           isLoading: store.state.isLoading,
-          user: store.state.user!,
+          user: store.state.user,
           filter: store.state.projectsFilter),
       onWillChange: (_ViewModel? prev, _ViewModel curr) {
         if (prev!.filter != curr.filter) {
           store.dispatch(GetProjectsPending());
         }
       },
-      builder: (BuildContext context, _ViewModel state) => state.isLoading &&
-              state.projects.isEmpty
-          ? const SizedBox()
-          : state.projects.isEmpty
-              ? const Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: Center(
-                      child: Text('No projects',
-                          style:
-                              TextStyle(fontSize: 18, color: AppColors.main))))
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.projects.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final ProjectModel project = state.projects[index];
-                    return ProjectTileWidget(
-                        slidableController: _slidableController,
-                        onTap: () {
-                          store.dispatch(SetTitle(project.name));
-                          store.dispatch(PushAction(
-                              ProjectDetailsScreen(projectId: project.id!),
-                              project.name));
-                        },
-                        project: project,
-                        secondaryActions: _buildSceondaryActions(project));
-                  }));
+      builder: (BuildContext context, _ViewModel state) =>
+          state.isLoading && state.projects.isEmpty || state.user == null
+              ? const SizedBox()
+              : state.projects.isEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Center(
+                          child: Text('No projects',
+                              style: TextStyle(
+                                  fontSize: 18, color: AppColors.main))))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.projects.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final ProjectModel project = state.projects[index];
+                        return ProjectTileWidget(
+                            slidableController: _slidableController,
+                            onTap: () {
+                              store.dispatch(SetTitle(project.name));
+                              store.dispatch(PushAction(
+                                  ProjectDetailsScreen(projectId: project.id!),
+                                  project.name));
+                            },
+                            project: project,
+                            secondaryActions: _buildSceondaryActions(project));
+                      }));
 
   List<Widget> _buildSceondaryActions(ProjectModel project) => <Widget>[
         IconSlideAction(

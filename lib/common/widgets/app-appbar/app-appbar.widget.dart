@@ -35,37 +35,43 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           user: store.state.user,
           titles: store.state.titles,
           requests: store.state.requests),
-      builder: (BuildContext context, _ViewModel state) => AppBar(
-          leading: GestureDetector(
-              onTap: () {
-                final String fullName =
-                    '${state.user?.name} ${state.user?.lastName}';
-                if (fullName == state.titles.last) {
-                  return;
-                }
-                store.dispatch(
-                    PushAction(UserScreen(uid: state.user!.id), fullName));
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AvatarWidget(avatar: state.user?.avatar, sizes: 20))),
-          title: Text(state.titles.isNotEmpty ? state.titles.last : ''),
-          actions: <Widget>[
-            state.requests.isEmpty ||
-                    store.state.user!.position != Positions.Owner
-                ? const SizedBox()
-                : Stack(children: <Widget>[
-                    IconButton(
-                        icon: const Icon(Icons.notifications),
-                        onPressed: () {
-                          store.dispatch(
-                              PushAction(RequestsScreen(), 'Requests'));
-                        }),
-                    _buildRequestsBadge(state.requests.length.toString())
-                  ]),
-            _buildLogout(context)
-          ],
-          automaticallyImplyLeading: false));
+      builder: (BuildContext context, _ViewModel state) {
+        if (state.user == null) {
+          return const SizedBox();
+        }
+        return AppBar(
+            leading: GestureDetector(
+                onTap: () {
+                  final String fullName =
+                      '${state.user?.name} ${state.user?.lastName}';
+                  if (fullName == state.titles.last) {
+                    return;
+                  }
+                  store.dispatch(
+                      PushAction(UserScreen(uid: state.user!.id), fullName));
+                },
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        AvatarWidget(avatar: state.user?.avatar, sizes: 20))),
+            title: Text(state.titles.isNotEmpty ? state.titles.last : ''),
+            actions: <Widget>[
+              state.requests.isEmpty ||
+                      store.state.user!.position != Positions.Owner
+                  ? const SizedBox()
+                  : Stack(children: <Widget>[
+                      IconButton(
+                          icon: const Icon(Icons.notifications),
+                          onPressed: () {
+                            store.dispatch(
+                                PushAction(RequestsScreen(), 'Requests'));
+                          }),
+                      _buildRequestsBadge(state.requests.length.toString())
+                    ]),
+              _buildLogout(context)
+            ],
+            automaticallyImplyLeading: false);
+      });
 
   Widget _buildRequestsBadge(String text) => Positioned(
       right: 8,

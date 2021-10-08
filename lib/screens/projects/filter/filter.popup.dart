@@ -207,7 +207,7 @@ class _FilterProjectsPopupState extends State<FilterProjectsPopup> {
               onClick: () => _applyFilter(state))));
 
   void _applyFilter(_ViewModel state) {
-    store.dispatch(PopAction(isExternal: true));
+    store.dispatch(const PopAction(isExternal: true));
     store.dispatch(SaveProjectsFilter(ProjectsFilterModel(
         spec: selectedProjectSpec,
         stack: selectedStack,

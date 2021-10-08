@@ -6,7 +6,7 @@ class AppInput extends StatefulWidget {
       {required this.myController,
       required this.labelText,
       this.func,
-      required this.validator,
+      this.validator,
       this.errorText,
       this.maxLines = 1,
       this.isDisabledBorder = false,

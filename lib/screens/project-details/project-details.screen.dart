@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/widgets/stack/stack.widget.dart';
 import 'package:company_id_new/common/widgets/user-tile/user-tile.widget.dart';
 import 'package:company_id_new/screens/project-details/add-user/add-user.popup.dart';
@@ -20,9 +21,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.project, required this.user, required this.isLoading});
+  _ViewModel({this.project, this.user, required this.isLoading});
   ProjectModel? project;
-  UserModel user;
+  UserModel? user;
   bool isLoading;
 }
 
@@ -41,7 +42,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
           project: store.state.project,
-          user: store.state.user!,
+          user: store.state.user,
           isLoading: store.state.isLoading),
       onInit: (Store<AppState> store) {
         if (store.state.project != null &&
@@ -51,84 +52,89 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         store.dispatch(ClearDetailProject());
         store.dispatch(GetDetailProjectPending(widget.projectId));
       },
-      builder: (BuildContext context, _ViewModel state) => Scaffold(
-          floatingActionButton: state.user.position == Positions.Owner &&
-                  state.project?.endDate == null
-              ? FloatingActionButton(
-                  foregroundColor: AppColors.main2,
-                  child: const Icon(Icons.add),
-                  onPressed: () {
-                    showModalBottomSheet<dynamic>(
-                        context: context,
-                        useRootNavigator: true,
-                        builder: (BuildContext context) => AddUserPopup());
-                  })
-              : const SizedBox(),
-          body: state.isLoading && state.project == null
-              ? const SizedBox()
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-                  child: SmartRefresher(
-                      controller: RefreshController(initialRefresh: false),
-                      onRefresh: () {
-                        store.dispatch(ClearDetailProject());
-                        store.dispatch(
-                            GetDetailProjectPending(widget.projectId));
-                      },
-                      enablePullDown: true,
-                      child: ListView(children: <Widget>[
-                        Text('General info',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        _buildProjectInfoTile(
-                            'Industry: ', state.project?.industry),
-                        state.project?.startDate != null
-                            ? _buildProjectInfoTile(
-                                'Duration: ',
-                                _getDuration(state.project!.startDate!,
-                                    state.project?.endDate))
-                            : const SizedBox(),
-                        _buildProjectInfoTile(
-                            'Customer: ', state.project?.customer),
-                        const SizedBox(height: 12),
-                        Text('Stack',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        if (state.project?.stack != null &&
-                            state.project!.stack!.isNotEmpty)
-                          _buildStack(state.project!.stack!),
-                        const SizedBox(height: 12),
-                        Text('Onboard',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        if (state.project?.onboard != null &&
-                            state.project!.onboard!.isNotEmpty)
-                          _buildUsersList(
-                              state.project!,
-                              state.project!.onboard!,
-                              state.user.position!,
-                              true),
-                        const SizedBox(height: 12),
-                        Text('History',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        if (state.project?.history != null &&
-                            state.project!.history!.isNotEmpty)
-                          _buildUsersList(
-                              state.project!,
-                              state.project!.history!,
-                              state.user.position!,
-                              false)
-                      ])))));
+      builder: (BuildContext context, _ViewModel state) {
+        if (state.user == null) {
+          return const SizedBox();
+        }
+        return Scaffold(
+            floatingActionButton: state.user!.position == Positions.Owner &&
+                    state.project?.endDate == null
+                ? FloatingActionButton(
+                    foregroundColor: AppColors.main2,
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      showModalBottomSheet<dynamic>(
+                          context: context,
+                          useRootNavigator: true,
+                          builder: (BuildContext context) => AddUserPopup());
+                    })
+                : const SizedBox(),
+            body: state.isLoading && state.project == null
+                ? const SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 24),
+                    child: SmartRefresher(
+                        controller: AppRefreshers.projectdetails,
+                        onRefresh: () {
+                          store.dispatch(ClearDetailProject());
+                          store.dispatch(
+                              GetDetailProjectPending(widget.projectId));
+                        },
+                        enablePullDown: true,
+                        child: ListView(children: <Widget>[
+                          Text('General info',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          _buildProjectInfoTile(
+                              'Industry: ', state.project?.industry),
+                          state.project?.startDate != null
+                              ? _buildProjectInfoTile(
+                                  'Duration: ',
+                                  _getDuration(state.project!.startDate!,
+                                      state.project?.endDate))
+                              : const SizedBox(),
+                          _buildProjectInfoTile(
+                              'Customer: ', state.project?.customer),
+                          const SizedBox(height: 12),
+                          Text('Stack',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          if (state.project?.stack != null &&
+                              state.project!.stack!.isNotEmpty)
+                            _buildStack(state.project!.stack!),
+                          const SizedBox(height: 12),
+                          Text('Onboard',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          if (state.project?.onboard != null &&
+                              state.project!.onboard!.isNotEmpty)
+                            _buildUsersList(
+                                state.project!,
+                                state.project!.onboard!,
+                                state.user!.position!,
+                                true),
+                          const SizedBox(height: 12),
+                          Text('History',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          if (state.project?.history != null &&
+                              state.project!.history!.isNotEmpty)
+                            _buildUsersList(
+                                state.project!,
+                                state.project!.history!,
+                                state.user!.position!,
+                                false)
+                        ]))));
+      });
 
   String _getDuration(DateTime start, DateTime? end) {
     final String startDate = AppConverters.dateFromString((start).toString());

@@ -84,4 +84,6 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(archiveProjectEpic),
       EpicMiddleware<AppState>(getSignUpLink),
       EpicMiddleware<AppState>(signUpEpic),
+      EpicMiddleware<AppState>(forgotPasswordLinkEpic),
+      EpicMiddleware<AppState>(changePasswordEpic),
     ]);
