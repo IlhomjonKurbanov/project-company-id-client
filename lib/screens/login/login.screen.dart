@@ -27,6 +27,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
+  Timer? _timer;
   final TextEditingController _emailController =
       TextEditingController(text: '');
   final TextEditingController _passwordController =
@@ -46,13 +47,19 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      Timer(
+      _timer = Timer(
         const Duration(milliseconds: 1000),
         () {
           DynamicLinkService.retrieveDynamicLink();
         },
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
