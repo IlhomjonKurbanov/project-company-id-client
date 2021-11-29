@@ -35,8 +35,27 @@ class EventMarkersWidget extends StatelessWidget {
                   child: Container(
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: badge.color),
-                      width: 6,
-                      height: 6));
+                      width: 8,
+                      height: 8));
+            case 2:
+              return Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: badge.color),
+                      width: 8,
+                      height: 8));
+            case 3:
+              return Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: badge.color),
+                      width: 8,
+                      height: 8));
+
             default:
               return const SizedBox();
           }

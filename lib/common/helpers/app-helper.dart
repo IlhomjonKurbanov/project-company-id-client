@@ -27,13 +27,14 @@ mixin AppHelper {
     }
   }
 
-  static Future<DateTime?> chooseDate(BuildContext context) async {
+  static Future<DateTime?> chooseDate(BuildContext context,
+      {DateTime? lastDate}) async {
     final DateTime today = DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: today,
         firstDate: DateTime(1950, 8),
-        lastDate: today,
+        lastDate: lastDate ?? today,
         builder: (BuildContext context, Widget? child) => Theme(
             data: Theme.of(context).copyWith(
               primaryColor: AppColors.semiGrey,

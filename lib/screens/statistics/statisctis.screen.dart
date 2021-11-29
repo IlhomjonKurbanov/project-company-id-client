@@ -59,14 +59,20 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     final List<SpeedDialChild> speedDials = <SpeedDialChild>[
       AppHelper.speedDialChild(() => _addVacation(),
           const Icon(Icons.snooze, color: AppColors.main2)),
-      AppHelper.speedDialChild(
-          () => showModalBottomSheet<dynamic>(
-              context: context,
-              isScrollControlled: true,
-              useRootNavigator: true,
-              builder: (BuildContext ontext) => AddEditTimelogDialogPopup(
-                  choosedDate: store.state.currentDate.focusedDay)),
-          const Icon(Icons.alarm_add, color: AppColors.main2))
+      AppHelper.speedDialChild(() {
+        final DateTime now = DateTime.now();
+        if (store.state.currentDate.focusedDay.month < now.month) {
+          store.dispatch(Notify(NotifyModel(
+              NotificationType.Error, 'You can\'t track time on past month')));
+          return;
+        }
+        showModalBottomSheet<dynamic>(
+            context: context,
+            isScrollControlled: true,
+            useRootNavigator: true,
+            builder: (BuildContext ontext) => AddEditTimelogDialogPopup(
+                choosedDate: store.state.currentDate.focusedDay));
+      }, const Icon(Icons.alarm_add, color: AppColors.main2))
     ];
     if (store.state.user!.position == Positions.Owner) {
       speedDials.add(AppHelper.speedDialChild(

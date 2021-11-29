@@ -44,10 +44,15 @@ mixin AuthService {
         data: <String, dynamic>{'email': email});
   }
 
-  static Future<void> forgotChangePassword(ChangePasswordPending action) async {
-    await api.dio.post<dynamic>('/auth/forgot-change', data: <String, dynamic>{
+  static Future<UserModel> forgotChangePassword(
+      ChangePasswordPending action) async {
+    final Response<dynamic> res = await api.dio
+        .post<dynamic>('/auth/forgot-change', data: <String, dynamic>{
       'password': action.password,
       'token': action.token
     });
+    await api.localStorageService
+        .saveTokenKey(res.data['accessToken'] as String);
+    return UserModel.fromJson(res.data as Map<String, dynamic>);
   }
 }

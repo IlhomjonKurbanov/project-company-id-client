@@ -64,3 +64,18 @@ class RemoveProjectFromUserSuccess {
 }
 
 class RemoveProjectFromUserError {}
+
+class ChangeEvaluationDatePending {
+  const ChangeEvaluationDatePending(this.id, this.date, this.salary);
+  final String id;
+  final DateTime date;
+  final int salary;
+}
+
+class ChangeEvaluationDateSuccess {
+  const ChangeEvaluationDateSuccess(this.date, this.salary);
+  final DateTime date;
+  final int salary;
+}
+
+class ChangeEvaluationDateError {}

@@ -4,6 +4,7 @@ import 'package:company_id_new/common/services/users.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -45,9 +46,28 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
           AppRefreshers.user.refreshCompleted();
           return GetUserSuccess(user);
         }).handleError((dynamic e) {
+          AppRefreshers.user.refreshCompleted();
           s.store.dispatch(SetError(e));
           s.store.dispatch(GetUserError());
         }));
+
+Stream<void> changeEvalationEpic(
+        Stream<dynamic> actions, EpicStore<AppState> store) =>
+    actions.whereType<ChangeEvaluationDatePending>().switchMap(
+        (ChangeEvaluationDatePending action) => Stream<void>.fromFuture(
+                    UsersService.changeEvaluationDate(
+                        action.id, action.date, action.salary))
+                .expand<dynamic>((_) {
+              return <dynamic>[
+                ChangeEvaluationDateSuccess(action.date, action.salary),
+                Notify(NotifyModel(NotificationType.Success,
+                    'Evaluation and salary has been changed')),
+                const PopAction(isExternal: true)
+              ];
+            }).handleError((dynamic e) {
+              s.store.dispatch(SetError(e));
+              s.store.dispatch(ChangeEvaluationDateError());
+            }));
 
 Stream<void> archiveUserEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>

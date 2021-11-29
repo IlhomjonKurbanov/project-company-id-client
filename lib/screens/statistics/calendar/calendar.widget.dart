@@ -169,6 +169,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             if (calendar.birthdays != null) {
               badges.add(BadgeModel(AppColors.orange, ''));
             }
+            // badges.add(BadgeModel(Colors.blue, ''));
           }
           return Positioned(
             right: 1,

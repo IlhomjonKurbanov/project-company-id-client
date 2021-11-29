@@ -19,3 +19,5 @@ enum Positions { Owner, Developer }
 enum RequestStatus { Approved, Rejected, Pending }
 
 enum ImagePickerType { camera, gallery }
+
+enum DynamicLinkEvents { Forgot, Signup, Null }

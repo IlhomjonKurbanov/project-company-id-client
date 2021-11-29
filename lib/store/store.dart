@@ -71,6 +71,7 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(getRequestsEpic), //h
       EpicMiddleware<AppState>(requestVacationEpic), //h
       EpicMiddleware<AppState>(changeStatusVacationEpic), //h
+      EpicMiddleware<AppState>(changeEvalationEpic), //h
       EpicMiddleware<AppState>(filteredLogUsersEpic), //h
       EpicMiddleware<AppState>(filteredLogProjectsEpic), //h
       EpicMiddleware<AppState>(filteredProjectsUsersEpic), //h
@@ -84,6 +85,7 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(archiveProjectEpic),
       EpicMiddleware<AppState>(getSignUpLink),
       EpicMiddleware<AppState>(signUpEpic),
+      EpicMiddleware<AppState>(retrieveDynamicLinkEpic),
       EpicMiddleware<AppState>(forgotPasswordLinkEpic),
       EpicMiddleware<AppState>(changePasswordEpic),
     ]);

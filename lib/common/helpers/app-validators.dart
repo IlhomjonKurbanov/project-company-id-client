@@ -15,6 +15,16 @@ mixin AppValidators {
     return null;
   }
 
+  static String? onlyNumbers(String? value,
+      {String errorText = 'Field should be a number'}) {
+    final RegExp onlyNumbersPattern = RegExp(r'^\d+$');
+
+    if (value != null && !onlyNumbersPattern.hasMatch(value)) {
+      return errorText;
+    }
+    return null;
+  }
+
   static String? validateEmailForlink(String? value) {
     if (value!.isEmpty) {
       return 'Please enter email';

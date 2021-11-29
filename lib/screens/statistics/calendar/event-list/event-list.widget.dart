@@ -208,17 +208,19 @@ class _EventListWidgetState extends State<EventListWidget> {
                   title: state.filter!.project!.name, icon: Icons.desktop_mac))
       ]);
 
-  Widget _buildVacations(_ViewModel state) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                  'Vacations available: ${state.vacationSickAvailable!.vacationAvailable} of 18'),
-              Text(
-                  'Sick available: ${state.vacationSickAvailable!.sickAvailable} of 5'),
-            ]),
-      );
+  Widget _buildVacations(_ViewModel state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+                'Vacations available: ${state.vacationSickAvailable!.vacationAvailable} of ${state.authUser?.vacationCount}'),
+            Text(
+                'Sick available: ${state.vacationSickAvailable!.sickAvailable} of 5'),
+          ]),
+    );
+  }
 
   String _getBirthdays(List<LogModel> logs) {
     final List<LogModel> birthdays =

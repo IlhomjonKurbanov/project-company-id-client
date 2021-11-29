@@ -4,6 +4,7 @@ import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/common/wrappers/loader.wrapper.dart';
 import 'package:company_id_new/screens/splash/splash.screen.dart';
+import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
@@ -27,7 +28,17 @@ GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
+  void initState() {
+    WidgetsBinding.instance?.addObserver(this);
+    super.initState();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && store.state.user?.id == null) {
+      store.dispatch(RetrieveDynamicLinkPending());
+    }
+
     if (state == AppLifecycleState.resumed && store.state.user?.id != null) {
       if (store.state.user?.position == Positions.Owner) {
         store.dispatch(GetRequestsPending());

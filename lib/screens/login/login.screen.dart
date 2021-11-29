@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/helpers/app-validators.dart';
-import 'package:company_id_new/common/services/dynamic-links.service.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/screens/check-email/check-email.screen.dart';
@@ -13,6 +11,7 @@ import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
@@ -26,7 +25,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
+class _LoginScreenState extends State<LoginScreen> {
   Timer? _timer;
   final TextEditingController _emailController =
       TextEditingController(text: '');
@@ -36,25 +35,6 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isRemember = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addObserver(this);
-    DynamicLinkService.retrieveDynamicLink();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _timer = Timer(
-        const Duration(milliseconds: 1000),
-        () {
-          DynamicLinkService.retrieveDynamicLink();
-        },
-      );
-    }
-  }
 
   @override
   void dispose() {

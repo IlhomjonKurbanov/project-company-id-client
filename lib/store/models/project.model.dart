@@ -30,42 +30,44 @@ class ProjectModel {
   DateTime? endDate;
   bool? isActivity;
 
-  static ProjectModel fromJson(Map<String, dynamic> json) => ProjectModel(
-        id: json['_id'] as String?,
-        name: json['name'] as String,
-        isInternal: json['isInternal'] as bool?,
-        isActivity:
-            json['isActivity'] == null ? null : json['isActivity'] as bool?,
-        customer: json['customer'] as String?,
-        industry: json['industry'] as String?,
-        status: json['status'] == null
-            ? null
-            : AppConverting.projectStatusFromString(json['status'] as String?),
-        stack: json['stack'] != null
-            ? json['stack']
-                .map<StackModel>((dynamic stack) =>
-                    StackModel.fromJson(stack as Map<String, dynamic>))
-                .toList() as List<StackModel>
-            : null,
-        history: json['history'] != null
-            ? json['history']
-                .map<UserModel>((dynamic user) =>
-                    UserModel.fromJson(user as Map<String, dynamic>))
-                .toList() as List<UserModel>
-            : null,
-        onboard: json['onboard'] != null
-            ? json['onboard']
-                .map<UserModel>((dynamic user) =>
-                    UserModel.fromJson(user as Map<String, dynamic>))
-                .toList() as List<UserModel>
-            : null,
-        startDate: json['startDate'] == null
-            ? null
-            : DateTime.parse(json['startDate'] as String),
-        endDate: json['endDate'] == null
-            ? null
-            : DateTime.parse(json['endDate'] as String),
-      );
+  static ProjectModel fromJson(Map<String, dynamic> json) {
+    return ProjectModel(
+      id: json['_id'] as String?,
+      name: json['name'] as String,
+      isInternal: json['isInternal'] as bool?,
+      isActivity:
+          json['isActivity'] == null ? null : json['isActivity'] as bool?,
+      customer: json['customer'] as String?,
+      industry: json['industry'] as String?,
+      status: json['status'] == null
+          ? null
+          : AppConverting.projectStatusFromString(json['status'] as String?),
+      stack: json['stack'] != null
+          ? json['stack']
+              .map<StackModel>((dynamic stack) =>
+                  StackModel.fromJson(stack as Map<String, dynamic>))
+              .toList() as List<StackModel>
+          : null,
+      history: json['history'] != null
+          ? json['history']
+              .map<UserModel>((dynamic user) =>
+                  UserModel.fromJson(user as Map<String, dynamic>))
+              .toList() as List<UserModel>
+          : null,
+      onboard: json['onboard'] != null
+          ? json['onboard']
+              .map<UserModel>((dynamic user) =>
+                  UserModel.fromJson(user as Map<String, dynamic>))
+              .toList() as List<UserModel>
+          : null,
+      startDate: json['startDate'] == null
+          ? null
+          : DateTime.parse(json['startDate'] as String),
+      endDate: json['endDate'] == null
+          ? null
+          : DateTime.parse(json['endDate'] as String),
+    );
+  }
 
   ProjectModel copyWith(
           {String? id,

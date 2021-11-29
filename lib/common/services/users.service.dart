@@ -38,6 +38,12 @@ mixin UsersService {
     return endDate;
   }
 
+  static Future<void> changeEvaluationDate(
+      String id, DateTime date, int salary) async {
+    await api.dio.post<dynamic>('/user/$id/evaldate',
+        data: <String, dynamic>{'date': date.toString(), 'salary': salary});
+  }
+
   static Future<void> removeActiveProjectFromUser(
       ProjectModel project, String userId) async {
     await api.dio.delete<dynamic>('/user/$userId/active-project/${project.id}');

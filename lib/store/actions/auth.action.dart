@@ -8,6 +8,12 @@ class CheckTokenSuccess {
   final UserModel user;
 }
 
+class RetrieveDynamicLinkPending {}
+
+class RetrieveDynamicLinkSucess {}
+
+class RetrieveDynamicLinkError {}
+
 class SignInPending {
   const SignInPending(this.email, this.password);
   final String email;

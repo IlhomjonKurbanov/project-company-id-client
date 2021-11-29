@@ -26,6 +26,7 @@ List<UserModel> _setUsers(List<UserModel> title, dynamic action) {
 final Reducer<UserModel?> userReducers =
     combineReducers<UserModel?>(<UserModel? Function(UserModel?, dynamic)>[
   TypedReducer<UserModel?, GetUserSuccess>(_setUser),
+  TypedReducer<UserModel?, ChangeEvaluationDateSuccess>(_changeEvalSalary),
   TypedReducer<UserModel?, RemoveProjectFromUserSuccess>(
       _removeProjectFromUser),
   TypedReducer<UserModel?, AddProjectToUserSuccess>(_addProjectToUser),
@@ -33,6 +34,11 @@ final Reducer<UserModel?> userReducers =
 
 UserModel? _setUser(UserModel? user, GetUserSuccess action) {
   return action.user;
+}
+
+UserModel? _changeEvalSalary(
+    UserModel? user, ChangeEvaluationDateSuccess action) {
+  return user?.copyWith(evaluationDate: action.date, salary: action.salary);
 }
 
 UserModel? _removeProjectFromUser(
