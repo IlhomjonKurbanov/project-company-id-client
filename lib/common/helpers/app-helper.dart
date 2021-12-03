@@ -15,6 +15,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 mixin AppHelper {
+  static bool isMac(BuildContext context) {
+    return Platform.isMacOS && MediaQuery.of(context).size.aspectRatio > 0.8;
+  }
+
   static SpeedDialChild speedDialChild(Function func, Widget icon) =>
       SpeedDialChild(
           child: icon, backgroundColor: AppColors.main, onTap: () => func());

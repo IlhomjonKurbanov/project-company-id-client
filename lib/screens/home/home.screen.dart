@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-helper.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
@@ -70,14 +71,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           },
           child: Scaffold(
               appBar: AppBarWidget(),
-              body: Navigator(
-                  key: navigatorKey,
-                  onGenerateRoute: (RouteSettings route) =>
-                      MaterialPageRoute<dynamic>(
-                          settings: route,
-                          builder: (BuildContext context) =>
-                              _children[_currentIndex])),
-              bottomNavigationBar: _bottomNavigation())));
+              body: Row(
+                children: <Widget>[
+                  if (AppHelper.isMac(context))
+                    NavigationRail(
+                        backgroundColor: Colors.transparent,
+                        selectedIndex: _currentIndex,
+                        onDestinationSelected: (int index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        labelType: NavigationRailLabelType.selected,
+                        destinations: _railBottomNav()),
+                  Expanded(
+                    child: Navigator(
+                        key: navigatorKey,
+                        onGenerateRoute: (RouteSettings route) =>
+                            MaterialPageRoute<dynamic>(
+                                settings: route,
+                                builder: (BuildContext context) =>
+                                    _children[_currentIndex])),
+                  ),
+                ],
+              ),
+              bottomNavigationBar:
+                  AppHelper.isMac(context) ? null : _bottomNavigation())));
 
   Widget _bottomNavigation() => BottomNavigationBar(
       unselectedItemColor: Colors.white,
@@ -98,6 +117,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             icon: Icon(Icons.desktop_mac), label: AppConstants.Projects),
         const BottomNavigationBarItem(
             icon: Icon(Icons.info_outline), label: AppConstants.Rules)
+      ];
+
+  List<NavigationRailDestination> _railBottomNav() =>
+      <NavigationRailDestination>[
+        NavigationRailDestination(
+            icon: const Icon(Icons.access_alarm, color: Colors.white),
+            label: _hasAccessToStatistics
+                ? const Text(AppConstants.Statistics,
+                    style: TextStyle(color: Colors.white))
+                : const Text(AppConstants.Timelog,
+                    style: TextStyle(color: Colors.white))),
+        const NavigationRailDestination(
+            icon: Icon(Icons.supervisor_account, color: Colors.white),
+            label: Text(AppConstants.Employees,
+                style: TextStyle(color: Colors.white))),
+        const NavigationRailDestination(
+            icon: Icon(Icons.desktop_mac, color: Colors.white),
+            label: Text(AppConstants.Projects,
+                style: TextStyle(color: Colors.white))),
+        const NavigationRailDestination(
+            icon: Icon(Icons.info_outline, color: Colors.white),
+            label:
+                Text(AppConstants.Rules, style: TextStyle(color: Colors.white)))
       ];
 
   String _getTitleAppBar(int index) {

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/helpers/app-helper.dart';
 import 'package:company_id_new/screens/statistics/calendar/event-list/event-list.widget.dart';
 import 'package:company_id_new/screens/statistics/calendar/event-markers/event-markers.widget.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -45,51 +48,59 @@ class CalendarWidget extends StatefulWidget {
 class _CalendarWidgetState extends State<CalendarWidget> {
   final DateTime _today = DateTime.now();
   @override
-  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
-      converter: (Store<AppState> store) => _ViewModel(
-          statistic: store.state.statistic,
-          currentDate: store.state.currentDate,
-          holidays: store.state.holidays,
-          filter: store.state.filter,
-          logs: store.state.logs,
-          user: store.state.user,
-          logsByDate: store.state.logsByDate),
-      onWillChange: (_ViewModel? prev, _ViewModel curr) {
-        if (prev!.filter != curr.filter) {
-          _updateLogs(curr);
-        }
-      },
-      builder: (BuildContext context, _ViewModel state) =>
-          Column(children: <Widget>[
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TableCalendar<dynamic>(
-                    onPageChanged: _onPageChanged,
-                    onCalendarCreated: _onCalendarCreated,
-                    focusedDay: state.currentDate.focusedDay,
-                    selectedDayPredicate: (DateTime day) =>
-                        isSameDay(state.currentDate.focusedDay, day),
-                    lastDay:
-                        DateTime(_today.year + 10, _today.month, _today.day),
-                    firstDay:
-                        DateTime(_today.year - 10, _today.month, _today.day),
-                    eventLoader: (DateTime day) =>
-                        state.logs?[_modifyDate(day)] ?? <dynamic>[],
-                    holidayPredicate: (DateTime date) {
-                      List<DateTime> dates = <DateTime>[];
-                      if (state.holidays != null &&
-                          state.holidays!.isNotEmpty) {
-                        dates = state.holidays!.keys.toList();
-                      }
-                      return dates.contains(_modifyDate(date));
-                    },
-                    calendarStyle: _getCalendarStyle(),
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    headerStyle: _getHeaderStyle(state),
-                    onDaySelected: _onDaySelected,
-                    calendarBuilders: _getBuilders())),
-            Expanded(child: EventListWidget())
-          ]));
+  Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.aspectRatio);
+    return StoreConnector<AppState, _ViewModel>(
+        converter: (Store<AppState> store) => _ViewModel(
+            statistic: store.state.statistic,
+            currentDate: store.state.currentDate,
+            holidays: store.state.holidays,
+            filter: store.state.filter,
+            logs: store.state.logs,
+            user: store.state.user,
+            logsByDate: store.state.logsByDate),
+        onWillChange: (_ViewModel? prev, _ViewModel curr) {
+          if (prev!.filter != curr.filter) {
+            _updateLogs(curr);
+          }
+        },
+        builder: (BuildContext context, _ViewModel state) =>
+            AppHelper.isMac(context)
+                ? Row(children: _buildCalendar(state))
+                : Column(children: _buildCalendar(state)));
+  }
+
+  List<Widget> _buildCalendar(_ViewModel state) {
+    return <Widget>[
+      SizedBox(
+          width: AppHelper.isMac(context)
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
+          child: TableCalendar<dynamic>(
+              onPageChanged: _onPageChanged,
+              onCalendarCreated: _onCalendarCreated,
+              focusedDay: state.currentDate.focusedDay,
+              selectedDayPredicate: (DateTime day) =>
+                  isSameDay(state.currentDate.focusedDay, day),
+              lastDay: DateTime(_today.year + 10, _today.month, _today.day),
+              firstDay: DateTime(_today.year - 10, _today.month, _today.day),
+              eventLoader: (DateTime day) =>
+                  state.logs?[_modifyDate(day)] ?? <dynamic>[],
+              holidayPredicate: (DateTime date) {
+                List<DateTime> dates = <DateTime>[];
+                if (state.holidays != null && state.holidays!.isNotEmpty) {
+                  dates = state.holidays!.keys.toList();
+                }
+                return dates.contains(_modifyDate(date));
+              },
+              calendarStyle: _getCalendarStyle(),
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              headerStyle: _getHeaderStyle(state),
+              onDaySelected: _onDaySelected,
+              calendarBuilders: _getBuilders())),
+      Expanded(child: EventListWidget())
+    ];
+  }
 
   CalendarStyle _getCalendarStyle() => const CalendarStyle(
       holidayDecoration: BoxDecoration(),
