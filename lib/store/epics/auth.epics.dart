@@ -2,17 +2,14 @@ import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/services/auth.service.dart';
 import 'package:company_id_new/common/services/dynamic-links.service.dart';
-import 'package:company_id_new/screens/change-password/change-password.screen.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/login/login.screen.dart';
-import 'package:company_id_new/screens/signup/signup.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/store/models/dynamic-link.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -22,36 +19,30 @@ import 'package:rxdart/rxdart.dart';
 
 Stream<void> checkTokenEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>
-    actions.whereType<CheckTokenPending>().switchMap((CheckTokenPending
-            action) =>
-        Stream<UserModel>.fromFuture(AuthService.checkToken())
-            .expand<dynamic>((UserModel user) => <dynamic>[
-                  SetTitle(AppConstants.Statistics),
-                  SignInSuccess(user),
-                  user.position == Positions.Owner
-                      ? GetRequestsPending()
-                      : null,
-                  PushReplacementAction(HomeScreen(), isExternal: true)
-                ])
-            .onErrorReturnWith((dynamic e) => RetrieveDynamicLinkPending()));
+    actions.whereType<CheckTokenPending>().switchMap(
+        (CheckTokenPending action) =>
+            Stream<UserModel>.fromFuture(AuthService.checkToken())
+                .expand<dynamic>((UserModel user) => <dynamic>[
+                      SetTitle(AppConstants.Statistics),
+                      SignInSuccess(user),
+                      user.position == Positions.Owner
+                          ? GetRequestsPending()
+                          : null,
+                      PushReplacementAction(HomeScreen(), isExternal: true)
+                    ])
+                .onErrorReturnWith((dynamic e) =>
+                    PushReplacementAction(LoginScreen(), isExternal: true)));
 
 Stream<dynamic> retrieveDynamicLinkEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<RetrieveDynamicLinkPending>().switchMap<dynamic>(
         (RetrieveDynamicLinkPending action) =>
-            Stream<DynamicLinkModel>.fromFuture(
-                    DynamicLinkService.retrieveDynamicLink())
-                .map<dynamic>((DynamicLinkModel dynamicLink) {
-              if (dynamicLink.event == DynamicLinkEvents.Forgot) {
-                return PushReplacementAction(
-                    ChangePasswordScreen(dynamicLink.data!),
-                    isExternal: true);
-              }
-              if (dynamicLink.event == DynamicLinkEvents.Signup) {
-                return PushReplacementAction(SignupScreen(dynamicLink.data!),
-                    isExternal: true);
-              }
-              return PushReplacementAction(LoginScreen(), isExternal: true);
+            Stream<void>.fromFuture(DynamicLinkService.retrieveDynamicLink())
+                .map<dynamic>((_) {
+              return RetrieveDynamicLinkSucess();
+            }).handleError((dynamic e) {
+              print(e);
+              s.store.dispatch(RetrieveDynamicLinkError());
             }));
 
 Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>

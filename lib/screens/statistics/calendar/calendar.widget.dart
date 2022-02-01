@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
@@ -49,7 +47,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   final DateTime _today = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.aspectRatio);
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
             statistic: store.state.statistic,
