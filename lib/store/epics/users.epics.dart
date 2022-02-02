@@ -1,3 +1,8 @@
+// Package imports:
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/services/users.service.dart';
@@ -10,8 +15,6 @@ import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart' as s;
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<GetUsersPending>().switchMap<dynamic>(

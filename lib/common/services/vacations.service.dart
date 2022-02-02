@@ -1,8 +1,11 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
-import 'package:dio/dio.dart';
 
 mixin VacationsService {
   static Future<LogModel> changeStatusVacation(

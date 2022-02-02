@@ -1,11 +1,16 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 class _ViewModel {
   _ViewModel({required this.rules});

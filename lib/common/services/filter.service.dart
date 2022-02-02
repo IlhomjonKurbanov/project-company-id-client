@@ -1,8 +1,11 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:dio/dio.dart';
 
 mixin FilterService {
   static Future<List<UserModel>> getLogFilteredUsers(String projectId) async {

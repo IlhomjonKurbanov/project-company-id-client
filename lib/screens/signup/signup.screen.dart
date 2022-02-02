@@ -1,4 +1,14 @@
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-helper.dart';
@@ -9,9 +19,6 @@ import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/models/sign-up.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen(this.token);

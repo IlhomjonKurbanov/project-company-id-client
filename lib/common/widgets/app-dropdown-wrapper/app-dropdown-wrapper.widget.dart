@@ -1,5 +1,8 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-colors.dart';
 
 class AppDropDownWrapperWidget extends StatelessWidget {
   const AppDropDownWrapperWidget({required this.child});

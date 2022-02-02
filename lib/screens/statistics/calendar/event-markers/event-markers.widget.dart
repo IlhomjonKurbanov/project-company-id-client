@@ -1,6 +1,9 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
-import 'package:flutter/material.dart';
 
 class EventMarkersWidget extends StatelessWidget {
   const EventMarkersWidget(this.badges);

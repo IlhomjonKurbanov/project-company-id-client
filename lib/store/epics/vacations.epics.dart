@@ -1,3 +1,8 @@
+// Package imports:
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/services/vacations.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
@@ -7,8 +12,6 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart' as s;
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> changeStatusVacationEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>

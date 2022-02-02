@@ -1,6 +1,9 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<List<String>> titleReducer = combineReducers<
     List<String>>(<List<String> Function(List<String>, dynamic)>[

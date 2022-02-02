@@ -1,6 +1,9 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<List<StackModel>> stackReducers = combineReducers<
     List<StackModel>>(<List<StackModel> Function(List<StackModel>, dynamic)>[

@@ -1,3 +1,8 @@
+// Package imports:
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/common/services/filter.service.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
@@ -6,8 +11,6 @@ import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart' as s;
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> filteredLogUsersEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>

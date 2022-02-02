@@ -1,8 +1,11 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/models/sign-up.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:dio/dio.dart';
 
 mixin AuthService {
   static Future<UserModel> checkToken() async {

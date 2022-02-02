@@ -1,3 +1,7 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -6,7 +10,6 @@ import 'package:company_id_new/store/actions/rules.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<bool> loadingReducers =
     combineReducers<bool>(<bool Function(bool, dynamic)>[

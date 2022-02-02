@@ -1,7 +1,10 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<List<LogModel>> requestsReducer = combineReducers<
     List<LogModel>>(<List<LogModel> Function(List<LogModel>, dynamic)>[

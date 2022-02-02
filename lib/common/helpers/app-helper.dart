@@ -1,18 +1,25 @@
+// Dart imports:
 import 'dart:io';
-import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/common/helpers/app-enums.dart';
-import 'package:company_id_new/common/popups/choose-mod-image/choose-mod-image.popup.dart';
-import 'package:company_id_new/store/actions/notifier.action.dart';
-import 'package:company_id_new/store/models/notify.model.dart';
-import 'package:company_id_new/store/store.dart';
+
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
+import 'package:company_id_new/common/popups/choose-mod-image/choose-mod-image.popup.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
+import 'package:company_id_new/store/store.dart';
 
 mixin AppHelper {
   static bool isMac(BuildContext context) {

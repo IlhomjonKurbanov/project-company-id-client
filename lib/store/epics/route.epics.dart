@@ -1,10 +1,15 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
-import 'package:flutter/material.dart';
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> routeEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<PushAction>().map((PushAction action) {

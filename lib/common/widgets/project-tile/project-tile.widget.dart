@@ -1,3 +1,12 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
@@ -5,10 +14,6 @@ import 'package:company_id_new/common/widgets/stack/stack.widget.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:redux/redux.dart';
 
 class ProjectTileWidget extends StatelessWidget {
   const ProjectTileWidget(

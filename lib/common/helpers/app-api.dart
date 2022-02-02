@@ -1,7 +1,12 @@
+// Dart imports:
 import 'dart:io';
+
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/services/local-storage.service.dart';
-import 'package:dio/dio.dart';
 
 AppApi api = AppApi(localStorageService);
 

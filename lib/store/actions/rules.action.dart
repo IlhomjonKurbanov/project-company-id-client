@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:company_id_new/store/models/rules.model.dart';
 
 class GetRulesPending {}

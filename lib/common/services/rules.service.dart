@@ -1,6 +1,9 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
-import 'package:dio/dio.dart';
 
 mixin RulesService {
   static Future<List<RulesModel>> getRules() async {

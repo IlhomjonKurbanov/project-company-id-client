@@ -1,3 +1,8 @@
+// Package imports:
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/helpers/app-refreshers.dart';
 import 'package:company_id_new/common/services/logs.service.dart';
@@ -11,8 +16,6 @@ import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart' as s;
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<AppState> store) =>
     actions.whereType<GetLogsPending>().switchMap((GetLogsPending action) =>

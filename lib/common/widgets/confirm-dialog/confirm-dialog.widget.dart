@@ -1,8 +1,11 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/store.dart';
-import 'package:flutter/material.dart';
 
 class ConfirmDialogWidget extends StatelessWidget {
   const ConfirmDialogWidget({required this.title, required this.text});

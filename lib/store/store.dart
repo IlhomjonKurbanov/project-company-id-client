@@ -1,3 +1,9 @@
+// Package imports:
+import 'package:redux/redux.dart';
+import 'package:redux_epics/redux_epics.dart';
+import 'package:redux_logging/redux_logging.dart';
+
+// Project imports:
 import 'package:company_id_new/store/epics/auth.epics.dart';
 import 'package:company_id_new/store/epics/error.epics.dart';
 import 'package:company_id_new/store/epics/filter.epics.dart';
@@ -17,9 +23,6 @@ import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_epics/redux_epics.dart';
-import 'package:redux_logging/redux_logging.dart';
 
 final AppState initalState = AppState(
     isLoading: false,

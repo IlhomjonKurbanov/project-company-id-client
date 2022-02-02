@@ -1,7 +1,10 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/common/helpers/app-enums.dart';
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 
 class ChooseImagePickerPopup extends StatelessWidget {
   @override

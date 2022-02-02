@@ -1,6 +1,11 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-colors.dart';
 
 class AppSpeedDial extends StatelessWidget {
   const AppSpeedDial({this.speedDials, required this.icon, this.onPress});

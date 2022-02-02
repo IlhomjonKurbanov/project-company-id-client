@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:convert';
 
-import 'package:company_id_new/common/helpers/app-constants.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-constants.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({this.avatar, required this.sizes});

@@ -1,12 +1,17 @@
+// Flutter imports:
+import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:dio/dio.dart';
+import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/actions/error.actions.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
-import 'package:redux_epics/redux_epics.dart';
-import 'package:rxdart/rxdart.dart';
 
 Stream<void> errorEpic(
   Stream<dynamic> actions,

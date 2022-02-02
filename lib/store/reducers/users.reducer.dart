@@ -1,8 +1,11 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<List<UserModel>> usersReducers = combineReducers<
     List<UserModel>>(<List<UserModel> Function(List<UserModel>, dynamic)>[

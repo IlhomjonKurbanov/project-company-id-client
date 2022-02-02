@@ -1,6 +1,9 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
-import 'package:dio/dio.dart';
 
 mixin StackService {
   static Future<List<StackModel>> getStack() async {

@@ -1,3 +1,7 @@
+// Package imports:
+import 'package:dio/dio.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
@@ -7,7 +11,6 @@ import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/store.dart';
-import 'package:dio/dio.dart';
 
 class StatisticLog {
   StatisticLog(this.fullQuery, this.logType);

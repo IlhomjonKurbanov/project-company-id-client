@@ -1,5 +1,8 @@
-import 'package:company_id_new/common/helpers/app-helper.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:company_id_new/common/helpers/app-helper.dart';
 
 class SocialRowIconWidget extends StatelessWidget {
   const SocialRowIconWidget(

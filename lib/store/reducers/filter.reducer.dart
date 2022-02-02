@@ -1,9 +1,12 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<LogFilterModel?> filterReducers = combineReducers<
     LogFilterModel?>(<LogFilterModel? Function(LogFilterModel?, dynamic)>[

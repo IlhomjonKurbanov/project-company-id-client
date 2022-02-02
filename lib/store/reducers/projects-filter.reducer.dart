@@ -1,9 +1,12 @@
+// Package imports:
+import 'package:redux/redux.dart';
+
+// Project imports:
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/models/filter-projects-users-stack.model.dart';
 import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:redux/redux.dart';
 
 final Reducer<ProjectsFilterModel?> projectFilterReducers =
     combineReducers<ProjectsFilterModel?>(<

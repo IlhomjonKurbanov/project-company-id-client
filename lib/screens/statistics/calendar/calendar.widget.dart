@@ -1,3 +1,12 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// Project imports:
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converters.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
@@ -15,10 +24,6 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class _ViewModel {
   _ViewModel(
@@ -47,7 +52,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   final DateTime _today = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.aspectRatio);
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
             statistic: store.state.statistic,

@@ -20,4 +20,4 @@ enum RequestStatus { Approved, Rejected, Pending }
 
 enum ImagePickerType { camera, gallery }
 
-enum DynamicLinkEvents { Forgot, Signup, Null }
+// enum DynamicLinkEvents { Forgot, Signup, Null }
